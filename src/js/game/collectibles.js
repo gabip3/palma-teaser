@@ -26,10 +26,12 @@ export class Collectibles {
     this.travel = 0;
     this.nextAt = 0;
     this.t = 0;
+    this.seco = 0;   // segundos sem conseguir encaixar produto
   }
 
   update(dt, speed, v, obstacles) {
     this.t += dt;
+    this.seco += dt;
     const move = speed * dt;
     this.travel += move;
 
@@ -72,6 +74,7 @@ export class Collectibles {
     const x = this.#slot(v, obstacles, speed, arc ? spread : size * 0.5);
 
     if (x !== null) {
+      this.seco = 0;
       if (queijo) this.primeiroQueijo = false;
       const high = v.groundY - v.u * rand(1.55, 2.05);
       const low = v.groundY - v.u * 0.62;
@@ -94,6 +97,10 @@ export class Collectibles {
         });
       }
     }
+
+    /* Fechou tempo demais: em vez de espremer o produto do lado de um
+       obstaculo, pede espaco na pista e espera o vao chegar. */
+    if (x === null && this.seco > SPAWN.itemDrySpell) obstacles.pedirVao(SPAWN.itemWindow);
 
     // quando nao coube, tenta de novo logo adiante em vez de perder a vez
     this.nextAt = this.travel + speed *

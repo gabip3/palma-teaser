@@ -29,7 +29,7 @@ const els = {
   live: $('live'),
 };
 
-const BUILD = '2026-09-09-c';
+const BUILD = '2026-09-09-d';
 console.log('Palma teaser · build ' + BUILD);
 
 const game = new Game(els);

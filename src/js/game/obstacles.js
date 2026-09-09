@@ -12,7 +12,13 @@ export class Obstacles {
     this.list = [];
     this.nextAt = 0;   // em px de mundo percorrido
     this.travel = 0;
+    this.vaoPedido = 0;
   }
+
+  /* Reserva um intervalo maior antes do proximo obstaculo. Quem pede e o
+     spawner de produtos, quando a pista fecha e nao sobra folga para coletavel
+     nenhum. Vale para um intervalo so. */
+  pedirVao(segundos) { this.vaoPedido = Math.max(this.vaoPedido, segundos); }
 
   /* dificuldade 0..1 pelo trecho ja percorrido */
   #difficulty(meters) {
@@ -31,6 +37,8 @@ export class Obstacles {
 
   #spawn(speed, meters, v) {
     const d = this.#difficulty(meters);
+    const vao = this.vaoPedido;
+    this.vaoPedido = 0;
     const available = Object.keys(OBSTACLES).filter((k) => meters >= OBSTACLES[k].from);
     const kind = pick(available);
     const spec = OBSTACLES[kind];
@@ -39,14 +47,15 @@ export class Obstacles {
     const x = v.w + v.u * 0.6;
     this.list.push({ kind, x, w: spec.w * k, h: spec.h * k });
 
-    // par de obstaculos baixos: ainda transponivel com um pulo so
-    if (PAIRABLE.includes(kind) && Math.random() < SPAWN.pairChanceMax * d) {
+    // par de obstaculos baixos: ainda transponivel com um pulo so.
+    // o par ocupa pista: fica de fora quando o vao seguinte foi reservado.
+    if (!vao && PAIRABLE.includes(kind) && Math.random() < SPAWN.pairChanceMax * d) {
       this.list.push({ kind, x: x + spec.w * k * 1.22, w: spec.w * k, h: spec.h * k });
     }
 
     const lo = lerp(SPAWN.obstacleGapStart[0], SPAWN.obstacleGapEnd[0], d);
     const hi = lerp(SPAWN.obstacleGapStart[1], SPAWN.obstacleGapEnd[1], d);
-    this.nextAt = this.travel + speed * rand(lo, hi);
+    this.nextAt = this.travel + speed * Math.max(vao, rand(lo, hi));
   }
 
   /* caixa de colisao levemente menor que o desenho: perdoa o quase-acerto */

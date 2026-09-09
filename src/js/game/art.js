@@ -499,11 +499,16 @@ export function drawProp(ctx, kind, x, baseY, size, t) {
     case 'arvore':
       ctx.lineWidth = 9;
       ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -44); ctx.stroke();
-      ctx.beginPath();
-      ctx.ellipse(0, -68, 36, 32, 0, 0, Math.PI * 2);
-      ctx.ellipse(-24, -54, 22, 19, 0, 0, Math.PI * 2);
-      ctx.ellipse(25, -56, 20, 18, 0, 0, Math.PI * 2);
-      ctx.fill();
+      /* Cada lobo da copa e um caminho proprio. Encadeados no mesmo caminho, o
+         canvas liga um ao outro com uma reta; essas retas cruzam a forma e a
+         regra nonzero abre falhas dentro da copa. */
+      for (const [cx, cy, rx, ry] of [
+        [-24, -54, 22, 19], [25, -56, 20, 18], [0, -68, 36, 32],
+      ]) {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
       break;
 
     case 'poste':
@@ -588,10 +593,12 @@ export function drawProp(ctx, kind, x, baseY, size, t) {
       break;
 
     case 'moita':
-      ctx.beginPath();
-      ctx.ellipse(-12, -8, 16, 13, 0, 0, Math.PI * 2);
-      ctx.ellipse(10, -11, 19, 16, 0, 0, Math.PI * 2);
-      ctx.fill();
+      // mesmo cuidado da arvore: um caminho por lobo
+      for (const [cx, cy, rx, ry] of [[-12, -8, 16, 13], [10, -11, 19, 16]]) {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
       break;
   }
   ctx.restore();

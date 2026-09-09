@@ -139,6 +139,8 @@ Quase tudo o que se ajusta "no olho" está em `src/js/config.js`:
 - `PHYSICS.airtime` e `apexInCows`: sensação do pulo
 - `RUN.speedInCows` e `speedPerMeter`: velocidade e rampa de dificuldade
 - `SPAWN.*`: espaçamento de obstáculos e de coletáveis
+- `SPAWN.itemDrySpell` e `itemWindow`: de quanto em quanto tempo a pista abre
+  espaço para um produto quando a dificuldade já fechou os vãos
 - `JOURNEY.cycle`: quantos metros dura o percurso fazenda → casa
 - `MILESTONES`: em que distância cada mensagem da marca aparece
 
@@ -204,5 +206,26 @@ cenário e personagem crescem juntos em qualquer tela.
   mouse ou toque o navegador desenhava o anel de foco azul em volta do botão
   preto, sem servir para nada. O `Input` guarda qual foi o último comando e o
   fim de jogo decide a partir disso.
+- **A copa da árvore vinha rachada.** As três elipses estavam encadeadas num
+  caminho só, e o canvas liga uma arc/ellipse à seguinte com uma reta. Essas
+  retas cruzavam a forma e, sob a regra `nonzero`, cancelavam o sentido do
+  contorno e abriam buracos. Agora cada lobo é um `beginPath()` próprio. A
+  moita tinha exatamente o mesmo defeito. Auditado por inundação a partir da
+  borda: zero pixel de fundo preso dentro da copa, no tamanho de cena e
+  ampliado.
+- **Os coletáveis sumiam depois de ~1300 m.** Um produto exige
+  `itemClearanceBefore + itemClearanceAfter` = 2,05 s de pista limpa, porque
+  produto e obstáculo nunca disputam o mesmo pulo. Só que o intervalo entre
+  obstáculos aperta até 1,35–2,15 s lá pelos 1500 m: nenhum vão cabia mais e o
+  `#slot()` passava a devolver `null` para sempre. Medido no motor real: 14 →
+  8 → 5,7 → **0,5** itens a cada 400 m, e nada depois disso. A correção não
+  afrouxa a regra de segurança; quem procura lugar agora **reserva** espaço:
+  depois de `SPAWN.itemDrySpell` segundos sem conseguir encaixar nada, o
+  spawner de produtos chama `obstacles.pedirVao(SPAWN.itemWindow)` e o próximo
+  intervalo nasce maior (e sem obstáculo em par, que ocuparia a pista). A
+  densidade passa a se sustentar em 8–11 itens por 400 m até os 3200 m.
+  Auditados 1315 produtos: a folga para o obstáculo seguinte nunca caiu abaixo
+  dos 1,50 s exigidos. A rampa continua de pé, com vãos apertados subindo de
+  7% no começo para 37% no fim.
 - **`?debug=1`** expõe a instância do jogo em `window.palma` para ajuste fino
   no console.

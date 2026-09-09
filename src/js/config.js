@@ -74,6 +74,12 @@ export const SPAWN = {
   itemClearanceBefore: 0.55,
   itemClearanceAfter: 1.50,
   arcChance: 0.42,                // chance do grupo ser um arco de 3
+  /* No auge da rampa o intervalo entre obstaculos fica menor que a folga que um
+     produto exige, e sem isso os coletaveis sumiriam de vez la pelos 1300 m.
+     Depois de itemDrySpell segundos sem conseguir encaixar nada, o spawner de
+     produtos reserva um vao de itemWindow segundos na pista. */
+  itemDrySpell: 2.4,
+  itemWindow: 2.9,
 };
 
 /* Percurso continuo: fazenda -> campo/estrada -> cidade -> casa.
