@@ -7,7 +7,7 @@
   justify-items: center;
   text-align: center;
   padding:
-    calc(var(--safe-t) + clamp(150px, 21vh, 210px)) calc(var(--safe-r) + var(--gutter))
+    calc(var(--safe-t) + clamp(170px, 27vh, 275px)) calc(var(--safe-r) + var(--gutter))
     calc(var(--safe-b) + clamp(32px, 8vh, 72px))    calc(var(--safe-l) + var(--gutter));
   transition: opacity .45s var(--ease-out), transform .6s var(--ease-out);
 }
@@ -142,7 +142,7 @@
 
 /* telas muito baixas em paisagem: comprime a pilha */
 @media (max-height: 520px) and (orientation: landscape) {
-  .intro { padding-top: calc(var(--safe-t) + 104px); }
+  .intro { padding-top: calc(var(--safe-t) + 118px); }
   .intro__line2 { font-size: clamp(40px, 7.4vw, 76px); }
   .intro__sub { display: none; }
   .intro__invite { font-size: clamp(17px, 2vw, 22px); margin-block: 12px 18px; }
