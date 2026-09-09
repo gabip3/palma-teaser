@@ -196,7 +196,7 @@ cenário e personagem crescem juntos em qualquer tela.
 - **O foco só vai para o botão quando a pessoa está no teclado.** Focar o JOGAR
   NOVAMENTE ao fim da partida ajuda quem joga no teclado, mas para quem usa
   mouse ou toque o navegador desenhava o anel de foco azul em volta do botão
-  preto, sem servir para nada. O  guarda qual foi o último comando e o
+  preto, sem servir para nada. O `Input` guarda qual foi o último comando e o
   fim de jogo decide a partir disso.
-- **** expõe a instância do jogo em  para ajuste fino
+- **`?debug=1`** expõe a instância do jogo em `window.palma` para ajuste fino
   no console.
