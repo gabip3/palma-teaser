@@ -49,15 +49,18 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 | `assets/audio/vaca-mugindo.mp3` | arquivo enviado por você | mugido no hover do MUUUUITO |
 | `assets/fonts/nunito/` | Nunito variável (SIL OFL) | títulos e UI, até chegar a fonte do wordmark |
 
-O personagem **não** é uma vaca desenhada do zero: a cabeça é o path do ícone
-oficial, sem nenhuma alteração no desenho, e as manchas do corpo saem do pattern
-oficial. A única coisa acrescentada à cabeça é um preenchimento branco por trás,
-com regra de preenchimento `nonzero`, que fecha os vazados do rosto e das
-orelhas para o cenário não aparecer por dentro dela. O traço da cabeça **não**
-leva dilatação: engrossar a linha fechava o vão branco do rosto e a cara virava
-um bloco preto no tamanho de jogo. Sem dilatação o desenho segue legível até
-30 px, verificado ampliando os pixels reais. Corpo, patas e rabo são
-formas simples construídas em volta desses dois elementos reais.
+O personagem **não** é uma vaca desenhada do zero: a cabeça é a arte do ícone
+oficial, sem nenhuma alteração no traço, e as manchas do corpo saem do pattern
+oficial. Corpo, patas, úbere e rabo são formas simples construídas em volta
+desses dois elementos reais.
+
+A cabeça é montada **uma vez** como sprite, em . Não dá para
+pintar o rosto de branco só trocando a regra de preenchimento: os contornos
+internos do path vêm com sentido invertido, então  e 
+produzem exatamente o mesmo resultado e os vazados continuam vazados. O sprite
+desenha a arte, descobre o exterior por inundação a partir das bordas e pinta
+de branco tudo que sobrou por dentro. De quebra, desenhar a cabeça virou um
+ por quadro em vez de preencher um path.
 
 ---
 

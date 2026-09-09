@@ -3,7 +3,7 @@
    Assim personagem, obstaculos e cenario escalam juntos em qualquer tela. */
 
 import { BRAND } from '../config.js';
-import { drawFitted, withFit } from '../assets.js';
+import { drawFitted } from '../assets.js';
 
 /* ————————————————— PERSONAGEM ————————————————— */
 
@@ -124,26 +124,14 @@ export function drawCow(ctx, brand, x, groundY, u, s) {
   ctx.restore();
 
   /* ————— cabeca: icone oficial da marca —————
-     O desenho e exatamente o do icone, sem alteracao nenhuma. A unica adicao e
-     um preenchimento branco por tras: o mesmo path com regra 'nonzero' fecha os
-     vazados do rosto e das orelhas, entao o cenario nao aparece por dentro
-     dela. Nada de stroke extra aqui, que engrossaria a arte. */
+     Sprite pronto: a arte e a do icone, sem nada engrossado, com o rosto e o
+     miolo das orelhas pintados de branco. Ver buildHeadSprite em assets.js. */
   const headW = 66, headH = headW / 1.446;
   const tilt = s.airborne ? -0.1 : Math.sin(phase * 2) * 0.035;
   ctx.save();
   ctx.translate(26, -76 + bob);
   ctx.rotate(tilt);
-  withFit(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, () => {
-    ctx.fillStyle = BRAND.paper;
-    ctx.fill(brand.icon.path);
-  });
-  /* Sem `grow` aqui. A dilatacao existia para a arte de linha nao sumir em
-     tela pequena, mas ela engordava o traco justamente para dentro e fechava o
-     vao branco do rosto, deixando a cara preta. Verificado ate 30 px: o
-     desenho continua legivel sem engrossar nada. */
-  drawFitted(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, {
-    color: BRAND.ink,
-  });
+  ctx.drawImage(brand.headSprite, -headW / 2, -headH / 2, headW, headH);
   ctx.restore();
 
   ctx.restore();
