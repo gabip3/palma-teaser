@@ -123,30 +123,24 @@ export function drawCow(ctx, brand, x, groundY, u, s) {
   ctx.stroke(bodyPath);
   ctx.restore();
 
-  /* ————— cabeca —————
-     A silhueta e o path do icone oficial, mas preenchida como o corpo: branco
-     por dentro, mancha do pattern e contorno de tinta. Preenchendo o path com
-     'nonzero' os vazados fecham e sobra o contorno externo; o 'stroke' depois
-     traz de volta orelhas e focinho como linha. */
+  /* ————— cabeca: icone oficial da marca —————
+     O desenho e exatamente o do icone, sem alteracao nenhuma. A unica adicao e
+     um preenchimento branco por tras: o mesmo path com regra 'nonzero' fecha os
+     vazados do rosto e das orelhas, entao o cenario nao aparece por dentro
+     dela. Nada de stroke extra aqui, que engrossaria a arte. */
   const headW = 66, headH = headW / 1.446;
   const tilt = s.airborne ? -0.1 : Math.sin(phase * 2) * 0.035;
   ctx.save();
   ctx.translate(26, -76 + bob);
   ctx.rotate(tilt);
-  withFit(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, (escala) => {
-    const cara = brand.icon.path;
+  withFit(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, () => {
     ctx.fillStyle = BRAND.paper;
-    ctx.fill(cara);
-
-    ctx.save();
-    ctx.clip(cara);
-    drawFitted(ctx, brand.manchas[11], 196, 128, 78, 92, { color: BRAND.ink });
-    ctx.restore();
-
-    ctx.strokeStyle = BRAND.ink;
-    ctx.lineWidth = 5.5 / escala;   // mesma espessura do contorno do corpo
-    ctx.lineJoin = 'round';
-    ctx.stroke(cara);
+    ctx.fill(brand.icon.path);
+  });
+  // grow engorda o traco para a arte de linha nao sumir em telas pequenas
+  drawFitted(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, {
+    color: BRAND.ink,
+    grow: 1.9,
   });
   ctx.restore();
 
