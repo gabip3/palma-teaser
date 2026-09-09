@@ -137,10 +137,12 @@ export function drawCow(ctx, brand, x, groundY, u, s) {
     ctx.fillStyle = BRAND.paper;
     ctx.fill(brand.icon.path);
   });
-  // grow engorda o traco para a arte de linha nao sumir em telas pequenas
+  /* Sem `grow` aqui. A dilatacao existia para a arte de linha nao sumir em
+     tela pequena, mas ela engordava o traco justamente para dentro e fechava o
+     vao branco do rosto, deixando a cara preta. Verificado ate 30 px: o
+     desenho continua legivel sem engrossar nada. */
   drawFitted(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, {
     color: BRAND.ink,
-    grow: 1.9,
   });
   ctx.restore();
 

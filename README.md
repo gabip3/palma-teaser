@@ -53,7 +53,10 @@ O personagem **não** é uma vaca desenhada do zero: a cabeça é o path do íco
 oficial, sem nenhuma alteração no desenho, e as manchas do corpo saem do pattern
 oficial. A única coisa acrescentada à cabeça é um preenchimento branco por trás,
 com regra de preenchimento `nonzero`, que fecha os vazados do rosto e das
-orelhas para o cenário não aparecer por dentro dela. Corpo, patas e rabo são
+orelhas para o cenário não aparecer por dentro dela. O traço da cabeça **não**
+leva dilatação: engrossar a linha fechava o vão branco do rosto e a cara virava
+um bloco preto no tamanho de jogo. Sem dilatação o desenho segue legível até
+30 px, verificado ampliando os pixels reais. Corpo, patas e rabo são
 formas simples construídas em volta desses dois elementos reais.
 
 ---
