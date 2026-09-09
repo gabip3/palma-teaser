@@ -92,13 +92,13 @@ export class Game {
   }
 
   get speed() {
-    const base = this.v.w * RUN.speedFactor;
+    const base = this.v.u * RUN.speedInCows;
     const ramp = Math.min(RUN.speedMax, 1 + this.dist * RUN.speedPerMeter);
     const ease = this.state === 'launching' ? lerp(0.45, 1, smooth(this.launch / LAUNCH)) : 1;
     return base * ramp * ease;
   }
 
-  get ppm() { return this.v.w * RUN.pixelsPerMeter; }
+  get ppm() { return this.v.u * RUN.pixelsPerMeter; }
 
   /* ————— fluxo ————— */
 

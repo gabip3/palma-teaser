@@ -20,7 +20,7 @@ export const BRAND = {
 
 export const LAYOUT = {
   groundRatio: 0.775,       // linha do chao
-  cowXRatio: 0.25,          // posicao da vaca na largura
+  cowXRatio: 0.22,          // posicao da vaca na largura: pista a frente
   cowWidthFactor: 0.175,    // altura da vaca como fracao da largura do canvas
   cowMin: 58,
   cowMax: 126,
@@ -42,12 +42,15 @@ export const PHYSICS = {
 };
 
 export const RUN = {
-  speedFactor: 0.37,        // px/s como fracao da largura do canvas
-  speedMax: 1.38,           // multiplicador maximo de velocidade
+  /* Velocidade e placar medidos em ALTURAS DE VACA, nao em pixels de tela.
+     Antes eram proporcionais a largura do canvas, mas o tamanho da vaca tem
+     teto: no desktop ela andava 3,8 corpos por segundo e no celular so 2,1, e
+     no celular parecia arrastada. Agora o ritmo visual e a pontuacao sao
+     iguais em qualquer aparelho. */
+  speedInCows: 3.3,         // alturas de vaca por segundo
+  speedMax: 1.30,           // multiplicador maximo de velocidade
   speedPerMeter: 0.00024,   // ganho de velocidade por metro
-  // metros por pixel de LARGURA, nao por tamanho da vaca: assim a pontuacao
-  // anda no mesmo ritmo no celular e no desktop
-  pixelsPerMeter: 0.042,
+  pixelsPerMeter: 0.333,    // fracao da altura da vaca que vale um metro
   milkPerItem: 25,          // litros por produto coletado
   queijoValor: 100,         // o Queijo Divino vale quatro leites
   queijoChance: 0.16,       // ... e por isso aparece pouco

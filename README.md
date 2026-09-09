@@ -123,7 +123,7 @@ Quase tudo o que se ajusta "no olho" está em `src/js/config.js`:
 
 - `LAYOUT.cowWidthFactor`: tamanho do personagem em relação à tela
 - `PHYSICS.airtime` e `apexInCows`: sensação do pulo
-- `RUN.speedFactor` e `speedPerMeter`: velocidade e rampa de dificuldade
+- `RUN.speedInCows` e `speedPerMeter`: velocidade e rampa de dificuldade
 - `SPAWN.*`: espaçamento de obstáculos e de coletáveis
 - `JOURNEY.cycle`: quantos metros dura o percurso fazenda → casa
 - `MILESTONES`: em que distância cada mensagem da marca aparece
@@ -138,6 +138,10 @@ cenário e personagem crescem juntos em qualquer tela.
   revela o jogo por cima do mesmo palco.
 - **Composição centralizada** com manchas de vaca sangrando pelos quatro cantos,
   conforme o layout definido.
+- **Velocidade e placar medidos em alturas de vaca, não em pixels de tela.**
+  Estavam presos à largura do canvas, mas o tamanho da vaca tem teto: no desktop
+  ela andava 3,8 corpos por segundo e no celular só 2,1, e no celular parecia
+  arrastada. Agora são 3,3 corpos por segundo e 9,9 m/s em qualquer aparelho.
 - **O chão é pasto.** Faixa verde lisa com franja de capim na linha do horizonte.
   O capim rareia na cidade e volta na casa, contando o percurso.
 - **Progressão sem troca de fase.** Cada camada sorteia o próximo elemento com o
