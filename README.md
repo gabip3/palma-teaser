@@ -141,7 +141,10 @@ cenário e personagem crescem juntos em qualquer tela.
 - **Velocidade e placar medidos em alturas de vaca, não em pixels de tela.**
   Estavam presos à largura do canvas, mas o tamanho da vaca tem teto: no desktop
   ela andava 3,8 corpos por segundo e no celular só 2,1, e no celular parecia
-  arrastada. Agora são 3,3 corpos por segundo e 9,9 m/s em qualquer aparelho.
+  arrastada. Agora são 4,2 corpos por segundo e 12,6 m/s em qualquer aparelho.
+  Na tela estreita a vaca corre mais à esquerda (15% da largura, contra 22% no
+  desktop): como a velocidade acompanha o tamanho dela, é assim que o tempo de
+  reação no celular fica perto do desktop, 1,15 s contra 2,15 s.
 - **O chão é pasto.** Faixa verde lisa com franja de capim na linha do horizonte.
   O capim rareia na cidade e volta na casa, contando o percurso.
 - **Progressão sem troca de fase.** Cada camada sorteia o próximo elemento com o
@@ -157,9 +160,9 @@ cenário e personagem crescem juntos em qualquer tela.
   parecia boa ideia mas punia o clique curto, que é como quase todo mundo joga:
   um clique de 70 ms cortava o pulo para 52% e nenhum obstáculo médio passava.
 - **Todo obstáculo é comprovadamente transponível.** A janela de acerto medida
-  em simulação, varrendo todos os instantes possíveis de pulo: balde 0,61 s,
-  caixa 0,58 s, latão 0,53 s, fardo 0,50 s, cerca 0,48 s, trator 0,46 s, balde
-  duplo 0,45 s. Se mexer em velocidade, altura do pulo ou tamanho de obstáculo,
+  em simulação, varrendo todos os instantes possíveis de pulo: balde 0,65 s,
+  caixa 0,60 s, latão 0,56 s, fardo 0,55 s, cerca e trator 0,51 s, balde duplo
+  0,50 s. Se mexer em velocidade, altura do pulo ou tamanho de obstáculo,
   refaça essa conta: a largura do obstáculo e o alcance horizontal do pulo
   andam juntos, e baixar a velocidade encolhe o alcance.
 - **`prefers-reduced-motion`** desliga as animações de interface; a mecânica

@@ -88,7 +88,8 @@ export class Game {
     v.groundY = Math.round(v.h * LAYOUT.groundRatio);
     v.playH = v.groundY;
     v.band = v.h - v.groundY;
-    v.cowX = Math.round(v.w * LAYOUT.cowXRatio);
+    const estreito = v.w < 760;
+    v.cowX = Math.round(v.w * (estreito ? LAYOUT.cowXRatioNarrow : LAYOUT.cowXRatio));
   }
 
   get speed() {
