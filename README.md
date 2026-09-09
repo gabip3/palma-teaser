@@ -47,6 +47,7 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 | `assets/brand/palma-pattern.svg` | ladrilho inteiro, recolorível | disponível, ainda sem uso |
 | `assets/fonts/AuthenticSignature.woff2` | o `.otf` da pasta | pronto, mas em pausa (ver 2.2) |
 | `assets/audio/vaca-mugindo.mp3` | arquivo enviado por você | mugido no hover do MUUUUITO |
+| `assets/fonts/nunito/` | Nunito variável (SIL OFL) | títulos e UI, até chegar a fonte do wordmark |
 
 O personagem **não** é uma vaca desenhada do zero: a cabeça é o path do ícone
 oficial, e as manchas do corpo saem do pattern oficial. O corpo, as patas e o
@@ -70,20 +71,24 @@ Para trocar pelo produto real:
 
 O jogo passa a desenhar as imagens no lugar do vetor sem nenhuma outra mudança.
 
-### 2.2 Fontes: **a manuscrita está em pausa**
+### 2.2 Fontes
 
-A `Authentic Signature.otf` é uma manuscrita de assinatura. A pedido, ela está
-**fora de uso** neste momento: nenhuma regra CSS aponta para ela, então o
-arquivo nem chega a ser baixado. O token `--font-script` continua definido em
-`src/css/tokens.css` para religar quando quiser.
+A `Authentic Signature.otf` é uma manuscrita de assinatura. A pedido, está
+**fora de uso**: nenhuma regra CSS aponta para ela, então o arquivo nem chega a
+ser baixado. O token `--font-script` continua definido para religar quando quiser.
 
 O lettering do wordmark "Palma" é uma sans arredondada encorpada que **não veio
-na pasta**. Títulos, frases e HUD usam hoje uma pilha de fontes de sistema
-arredondadas (`ui-rounded` → `SF Pro Rounded` → `Segoe UI Variable Display` →
-`Roboto`), que chega perto mas muda de máquina para máquina.
+na pasta**. Até ela chegar, títulos e UI usam a **Nunito variável**, auto-hospedada
+em `assets/fonts/nunito/` (39 KB, subset latin, licença SIL Open Font).
 
-Se você mandar o arquivo da fonte do wordmark, a troca é de uma linha:
-`--font-display` em `src/css/tokens.css`.
+Antes disso a tipografia era uma pilha de fontes de sistema, e isso rendia uma
+página diferente em cada máquina: `SF Pro Rounded` no Mac, `Segoe UI Variable
+Display` no Windows. Métricas diferentes mudam a altura de linha, e por isso o
+respiro entre as frases aparecia menor numa máquina do que na outra. Fonte
+embutida resolve porque todo mundo baixa o mesmo desenho.
+
+Quando a fonte do wordmark chegar, a troca é de uma linha: `--font-display` em
+`src/css/tokens.css`.
 
 ---
 

@@ -143,7 +143,7 @@ export class Collectibles {
       ctx.arc(p.x, p.y, v.u * (0.22 + k * 0.5), 0, Math.PI * 2);
       ctx.stroke();
       ctx.fillStyle = cor;
-      ctx.font = `800 ${Math.max(11, v.u * 0.21)}px system-ui, sans-serif`;
+      ctx.font = `800 ${Math.max(11, v.u * 0.21)}px "Palma Sans", system-ui, sans-serif`;
       ctx.fillText(`+${p.valor} L`, p.x, p.y - v.u * (0.38 + k * 0.55));
     }
     ctx.restore();

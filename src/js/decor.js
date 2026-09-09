@@ -15,7 +15,7 @@ const WIDE = [
 ];
 
 const NARROW = [
-  { at: 'tl', i: 0, x: -16, y: -5, w: 46, h: 40, rot: -8, d: 1.0 },
+  { at: 'tl', i: 0, x: -21, y: -5, w: 46, h: 40, rot: -8, d: 1.0 },
   { at: 'tr', i: 2, x: -12, y: 4, w: 34, h: 30, rot: 14, d: 1.3 },
   { at: 'bl', i: 5, x: -15, y: -1, w: 31, h: 27, rot: 24, d: 1.5 },
   { at: 'br', i: 0, x: -13, y: 1, w: 32, h: 28, rot: 166, d: 1.7 },

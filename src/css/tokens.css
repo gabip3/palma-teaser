@@ -10,6 +10,20 @@
   font-display: swap;
 }
 
+/* Nunito variavel, auto-hospedada. Um arquivo cobre 400 a 1000, e o subset
+   latin ja cobre todo o portugues. Existe porque pilha de fonte do sistema
+   renderizava diferente em cada maquina: arredondada no Mac, reta no Windows,
+   com metricas diferentes e portanto respiro diferente entre as frases.
+   Licenca SIL Open Font em assets/fonts/nunito/OFL.txt. */
+@font-face {
+  font-family: "Palma Sans";
+  src: url("../../assets/fonts/nunito/Nunito-Variable.woff2") format("woff2-variations"),
+       url("../../assets/fonts/nunito/Nunito-Variable.woff2") format("woff2");
+  font-weight: 400 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* cor */
   --paper: #ffffff;
@@ -23,16 +37,13 @@
   /* tipografia
      --font-script  fonte oficial da pasta (Authentic Signature). Reservada as
                     FRASES da marca: o slogan e as falas. Nunca em titulo ou UI.
-     --font-display titulos. Pilha arredondada/encorpada, na familia do lettering
-                    do logotipo. TROCAR AQUI quando a fonte do wordmark chegar.
-     --font-ui      micro-copy, rotulos e numeros do HUD. */
-  /* EM PAUSA a pedido: a manuscrita oficial nao esta em uso em lugar nenhum,
-     entao o arquivo tambem nao e baixado. Para religar, aponte as regras de
-     frase de volta para esta variavel. */
+     --font-display titulos. Nunito auto-hospedada: mesma renderizacao em toda
+                    maquina. TROCAR AQUI quando a fonte do wordmark chegar.
+     --font-ui      micro-copy, rotulos e numeros do HUD, na mesma familia. */
+  /* EM PAUSA a pedido: a manuscrita oficial nao esta em uso em lugar nenhum. */
   --font-script: "Palma Signature", cursive;
-  --font-display: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
-                  "Segoe UI Variable Display", "Segoe UI", Roboto, system-ui, sans-serif;
-  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Palma Sans", ui-rounded, "Segoe UI Variable Display", system-ui, sans-serif;
+  --font-ui: "Palma Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 
   /* ritmo */
   --gutter: clamp(20px, 5.5vw, 72px);

@@ -7,10 +7,10 @@
 /vaca-mugindo.mp3
 
 # Fonte comercial, hoje fora de uso no site (ver README, secao 2.2). Fica fora
-# do repositorio publico por causa da licenca. Para religar, reponha
-# assets/fonts/ localmente.
+# do repositorio publico por causa da licenca. A Nunito, em assets/fonts/nunito/,
+# e SIL Open Font e vai versionada junto com a licenca.
 /Authentic Signature.otf
-assets/fonts/
+assets/fonts/AuthenticSignature.*
 
 node_modules/
 .DS_Store
