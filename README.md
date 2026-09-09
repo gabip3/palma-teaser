@@ -52,7 +52,7 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 O personagem **não** é uma vaca desenhada do zero: a cabeça é a silhueta do
 ícone oficial e as manchas saem do pattern oficial. A cabeça é preenchida com a
 mesma linguagem do corpo, branco por dentro com mancha e contorno de tinta:
-preencher o path com  fecha os vazados e sobra a silhueta, e o 
+preencher o path com `nonzero` fecha os vazados e sobra a silhueta, e o `stroke`
 depois traz de volta orelhas e focinho como linha. Corpo, patas e rabo são
 formas simples construídas em volta desses dois elementos reais.
 
