@@ -1,0 +1,265 @@
+/* ————— HUD ————— */
+
+.hud {
+  position: absolute;
+  z-index: 4;
+  top: calc(var(--safe-t) + clamp(80px, 11.5vh, 122px));
+  left: calc(var(--safe-l) + var(--gutter));
+  right: calc(var(--safe-r) + var(--gutter));
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: opacity .45s var(--ease-out) .15s, transform .55s var(--ease-out) .15s;
+}
+.stage[data-state="playing"] .hud,
+.stage[data-state="over"] .hud { opacity: 1; transform: none; }
+
+.hud__grid {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(18px, 4vw, 60px);
+  padding-top: clamp(10px, 1.6vh, 16px);
+  border-top: 2px solid var(--ink);
+}
+
+.hud__metric { display: grid; gap: 4px; }
+
+.hud__label {
+  font-size: clamp(8px, .82vw, 10px);
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(16, 13, 11, .45);
+  white-space: nowrap;
+}
+
+.hud__value {
+  font-size: clamp(21px, 2.9vw, 36px);
+  font-weight: 800;
+  letter-spacing: -.02em;
+  line-height: .95;
+  font-variant-numeric: tabular-nums;
+}
+.hud__value em {
+  font-style: normal;
+  font-size: .46em;
+  font-weight: 700;
+  letter-spacing: .06em;
+  margin-left: .22em;
+  opacity: .5;
+}
+
+.hud__metric--accent .hud__value { color: var(--blue); }
+
+.hud__metric--best { margin-left: auto; text-align: right; opacity: .48; }
+.hud__metric--best .hud__value { font-size: clamp(14px, 1.7vw, 20px); }
+.hud__metric--best .hud__label { letter-spacing: .18em; }
+
+/* pulso ao coletar */
+.hud__metric--accent.is-hit .hud__value { animation: milkpop .42s var(--ease-swing); }
+@keyframes milkpop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.13); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 420px) {
+  .hud__grid { gap: 14px; }
+  .hud__label { font-size: 7.5px; letter-spacing: .14em; }
+}
+
+/* ————— instrucao durante a partida ————— */
+
+.playhint {
+  position: absolute;
+  z-index: 4;
+  left: calc(var(--safe-l) + var(--gutter));
+  right: calc(var(--safe-r) + var(--gutter));
+  bottom: calc(var(--safe-b) + clamp(28px, 6vh, 56px));
+  margin: 0;
+  text-align: center;
+  font-size: clamp(13px, 1.25vw, 17px);
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--paper);
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .4s var(--ease-out), transform .5s var(--ease-out);
+}
+.playhint.is-on { opacity: 1; transform: none; }
+
+/* ————— marcos da marca durante a partida ————— */
+
+.milestone {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(2px, .6vh, 8px);
+  padding-inline: var(--gutter);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s var(--ease-out);
+}
+.milestone.is-on { opacity: 1; }
+
+.milestone__top,
+.milestone__bottom {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .55s var(--ease-out), transform .7s var(--ease-out);
+}
+.milestone.is-on .milestone__top { opacity: 1; transform: none; }
+.milestone.is-on .milestone__bottom { opacity: 1; transform: none; transition-delay: .12s; }
+
+/* tres vozes possiveis para as linhas do marco */
+.ms-label {
+  font-family: var(--font-ui);
+  font-size: clamp(10px, 1.15vw, 13px);
+  font-weight: 800;
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: rgba(16, 13, 11, .55);
+}
+.ms-display {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8.6vw, 108px);
+  font-weight: 900;
+  letter-spacing: -.035em;
+  line-height: .92;
+  text-transform: uppercase;
+  color: var(--blue);
+}
+/* slogan da marca: fonte oficial manuscrita */
+.ms-script {
+  font-family: var(--font-script);
+  font-size: clamp(42px, 9.4vw, 116px);
+  line-height: .82;
+  color: var(--blue);
+}
+
+.milestone__rule {
+  width: 0;
+  height: 2px;
+  margin-top: clamp(14px, 2.4vh, 26px);
+  background: var(--ink);
+  opacity: .25;
+  transition: width .8s var(--ease-out) .18s;
+}
+.milestone.is-on .milestone__rule { width: clamp(90px, 16vw, 200px); }
+
+/* ————— game over ————— */
+
+.over {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  padding:
+    calc(var(--safe-t) + clamp(96px, 14vh, 150px)) calc(var(--safe-r) + var(--gutter))
+    calc(var(--safe-b) + clamp(28px, 6vh, 56px))   calc(var(--safe-l) + var(--gutter));
+  background: var(--paper);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(2.5vh);
+  transition: opacity .32s var(--ease-out), transform .42s var(--ease-out);
+}
+.over[hidden] { display: none; }
+.stage[data-state="over"] .over { opacity: 1; transform: none; }
+
+/* marca d'agua: icone oficial sangrando pela borda */
+.over::before {
+  content: "";
+  position: absolute;
+  right: -14%;
+  bottom: -22%;
+  width: min(78vw, 640px);
+  aspect-ratio: 400 / 400;
+  background: var(--blue);
+  opacity: .07;
+  -webkit-mask: url("../../assets/brand/palma-icone.svg") no-repeat center / contain;
+  mask: url("../../assets/brand/palma-icone.svg") no-repeat center / contain;
+  pointer-events: none;
+}
+
+.over > * { position: relative; }
+
+.over__badge {
+  margin: 0 0 clamp(12px, 2vh, 20px);
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+}
+.over__badge[hidden] { display: none; }
+
+.over__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(72px, 18vw, 184px);
+  letter-spacing: -.045em;
+  line-height: .84;
+  color: var(--blue);
+}
+.over__title .over__u { display: inline-block; }
+
+.over__stats {
+  margin: clamp(20px, 3.4vh, 36px) 0 0;
+  font-size: clamp(16px, 1.8vw, 24px);
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgba(16, 13, 11, .72);
+}
+.over__stats b {
+  font-weight: 800;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.over__best {
+  margin: clamp(14px, 2vh, 20px) 0 0;
+  padding-top: clamp(12px, 1.8vh, 18px);
+  border-top: 2px solid var(--ink);
+  min-width: min(100%, 260px);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(16, 13, 11, .45);
+}
+.over__best span {
+  margin-left: 10px;
+  font-size: 15px;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.over__actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 26px);
+  flex-wrap: wrap;
+  margin-top: clamp(24px, 4vh, 44px);
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .over { padding-top: calc(var(--safe-t) + 70px); }
+  .over__title { font-size: clamp(56px, 11vw, 96px); }
+  .over__stats { font-size: 15px; margin-top: 14px; }
+  .over__best { margin-top: 10px; padding-top: 8px; }
+  .over__actions { margin-top: 18px; }
+}

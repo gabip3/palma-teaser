@@ -1,0 +1,49 @@
+/* Tokens da identidade Palma.
+   Azul oficial: PANTONE 286 C / R0 G57 B152 (referencia do manual na pasta). */
+
+@font-face {
+  font-family: "Palma Signature";
+  src: url("../../assets/fonts/AuthenticSignature.woff2") format("woff2"),
+       url("../../assets/fonts/AuthenticSignature.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* cor */
+  --paper: #ffffff;
+  --ink: #100d0b;
+  --blue: #003998;
+  --blue-deep: #002a70;
+  --blue-soft: #e7edf7;
+  --haze: #c3d0e6;
+  --line: rgba(16, 13, 11, .14);
+
+  /* tipografia
+     --font-script  fonte oficial da pasta (Authentic Signature). Reservada as
+                    FRASES da marca: o slogan e as falas. Nunca em titulo ou UI.
+     --font-display titulos. Pilha arredondada/encorpada, na familia do lettering
+                    do logotipo. TROCAR AQUI quando a fonte do wordmark chegar.
+     --font-ui      micro-copy, rotulos e numeros do HUD. */
+  /* EM PAUSA a pedido: a manuscrita oficial nao esta em uso em lugar nenhum,
+     entao o arquivo tambem nao e baixado. Para religar, aponte as regras de
+     frase de volta para esta variavel. */
+  --font-script: "Palma Signature", cursive;
+  --font-display: ui-rounded, "SF Pro Rounded", "Hiragino Maru Gothic ProN",
+                  "Segoe UI Variable Display", "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-ui: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* ritmo */
+  --gutter: clamp(20px, 5.5vw, 72px);
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-l: env(safe-area-inset-left, 0px);
+  --safe-r: env(safe-area-inset-right, 0px);
+
+  /* movimento */
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in: cubic-bezier(.7, 0, .84, 0);
+  --ease-swing: cubic-bezier(.34, 1.56, .64, 1);
+  --ease-fluid: cubic-bezier(.16, .84, .18, 1);   /* estica sem estalo */
+}

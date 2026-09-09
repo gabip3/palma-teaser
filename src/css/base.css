@@ -1,0 +1,256 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+}
+
+body { overflow: hidden; }
+
+img, svg { display: block; max-width: 100%; }
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue);
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.u-sr {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ————— palco ————— */
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  isolation: isolate;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* A cena do jogo so entra depois do clique em JOGAR: a abertura e uma pagina
+   puramente tipografica. */
+.stage__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .5s var(--ease-out) .12s;
+}
+.stage[data-state="playing"] .stage__canvas,
+.stage[data-state="over"] .stage__canvas { opacity: 1; }
+
+/* ————— manchas de vaca (composicao) ————— */
+
+.decor {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .8s var(--ease-out);
+}
+.decor.is-ready { opacity: 1; }
+
+.decor__blob {
+  position: absolute;
+  color: var(--ink);
+  opacity: .96;
+  will-change: transform;
+  transition: transform .9s var(--ease-out), opacity .55s linear;
+}
+.decor__blob--blue { color: var(--blue); }
+.decor__blob--ghost { color: var(--blue-soft); }
+
+/* as manchas saem de cena quando o jogo comeca */
+.stage[data-state="playing"] .decor,
+.stage[data-state="over"] .decor { opacity: 0; }
+
+/* ————— barra da marca ————— */
+
+.brandbar {
+  position: absolute;
+  z-index: 8;   /* a marca permanece visivel por cima da folha de fim de jogo */
+  top: calc(var(--safe-t) + clamp(16px, 3vw, 30px));
+  left: calc(var(--safe-l) + var(--gutter));
+  right: calc(var(--safe-r) + var(--gutter));
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.brandbar__logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.brandbar__logo img {
+  width: clamp(64px, 8.5vw, 104px);
+  height: auto;
+  transition: transform .5s var(--ease-out);
+}
+
+.stage[data-state="playing"] .brandbar__logo img,
+.stage[data-state="over"] .brandbar__logo img { width: clamp(48px, 5.5vw, 70px); }
+
+/* som */
+.sound {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px 8px 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--ink);
+  background: var(--paper);
+  transition: border-color .3s, background-color .3s, color .3s;
+}
+.sound:hover { border-color: var(--ink); }
+.sound__label { line-height: 1; }
+.sound__bars { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+.sound__bars i {
+  display: block;
+  width: 2px;
+  background: currentColor;
+  border-radius: 1px;
+  transform-origin: bottom;
+  animation: eq .9s var(--ease-out) infinite alternate;
+}
+.sound__bars i:nth-child(1) { height: 6px;  animation-delay: 0s; }
+.sound__bars i:nth-child(2) { height: 12px; animation-delay: .15s; }
+.sound__bars i:nth-child(3) { height: 8px;  animation-delay: .3s; }
+@keyframes eq { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+
+.sound[aria-pressed="false"] { color: rgba(16,13,11,.42); }
+.sound[aria-pressed="false"] .sound__bars i { animation: none; transform: scaleY(.3); }
+
+/* ————— botoes ————— */
+
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: clamp(17px, 1.35vw, 21px) clamp(22px, 1.7vw, 26px)
+           clamp(17px, 1.35vw, 21px) clamp(28px, 2.2vw, 34px);
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: clamp(12px, 1.02vw, 15px);
+  font-weight: 800;
+  letter-spacing: .18em;
+  overflow: hidden;
+  transition: transform .45s var(--ease-swing);
+}
+
+/* Hover: a tinta sobe enchendo o botao. A borda de cima e curva, entao o
+   movimento tem a mesma redondeza do lettering da marca, sem virar barra reta. */
+.cta::after {
+  content: "";
+  position: absolute;
+  left: -22%;
+  right: -22%;
+  top: 0;
+  bottom: -2px;
+  background: var(--ink);
+  border-radius: 50% 50% 0 0 / 42% 42% 0 0;
+  transform: translateY(104%);
+  transition: transform .5s var(--ease-out);
+  z-index: 0;
+}
+.cta:hover::after,
+.cta:focus-visible::after { transform: translateY(0); }
+
+.cta:hover { transform: translateY(-2px); }
+.cta:active { transform: scale(.97); }
+.cta__label, .cta__icon { position: relative; z-index: 1; }
+.cta__label { transition: letter-spacing .45s var(--ease-out); }
+.cta:hover .cta__label { letter-spacing: .22em; }
+
+.cta__icon {
+  display: grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .16);
+  transition:
+    transform .45s var(--ease-out),
+    background-color .35s var(--ease-out),
+    color .35s var(--ease-out);
+}
+/* a seta inverte: circulo cheio de branco sobre a tinta */
+.cta:hover .cta__icon,
+.cta:focus-visible .cta__icon {
+  transform: translateX(4px);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.linkbtn {
+  padding: 12px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(16,13,11,.55);
+  border-bottom: 1.5px solid transparent;
+  transition: color .3s, border-color .3s;
+}
+.linkbtn:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+/* dicas por tipo de ponteiro */
+.only-coarse { display: none; }
+@media (pointer: coarse) {
+  .only-fine { display: none; }
+  .only-coarse { display: inline; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+  }
+}
+
+.decor__float {
+  display: block;
+  animation: drift 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.decor__float, .decor__float svg { width: 100%; height: 100%; }
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to   { transform: translate3d(0, -1.6vh, 0) scale(1.035); }
+}

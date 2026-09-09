@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Palma — Estamos preparando algo muuuuito bom</title>
+<meta name="description" content="O novo site da Agropecuária Palma está chegando. Enquanto isso, jogue: da nossa fazenda para sua casa.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="assets/brand/palma-icone.svg" type="image/svg+xml">
+
+<link rel="preload" href="assets/brand/palma-icone.json" as="fetch" crossorigin>
+<link rel="preload" href="assets/brand/palma-manchas.json" as="fetch" crossorigin>
+
+<link rel="stylesheet" href="src/css/tokens.css">
+<link rel="stylesheet" href="src/css/base.css">
+<link rel="stylesheet" href="src/css/intro.css">
+<link rel="stylesheet" href="src/css/game.css">
+</head>
+<body>
+
+<main class="stage" id="stage" data-state="intro">
+
+  <!-- Cena continua: ja esta viva atras da intro e vira a area de jogo -->
+  <canvas class="stage__canvas" id="scene" role="img"
+          aria-label="Palmira, a vaca da Palma, corre da fazenda ate a casa do consumidor, desviando de obstaculos e coletando produtos."></canvas>
+
+  <!-- Manchas de vaca: composicao grafica, preenchidas via JS com o pattern oficial -->
+  <div class="decor" id="decor" aria-hidden="true"></div>
+
+  <header class="brandbar">
+    <div class="brandbar__logo">
+      <img src="assets/brand/palma-logo.svg" alt="Agropecuária Palma" width="120" height="93" decoding="async">
+    </div>
+    <button class="sound" id="sound" type="button" aria-pressed="true"
+            aria-label="Desativar som do jogo">
+      <span class="sound__bars" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="sound__label">SOM</span>
+    </button>
+  </header>
+
+  <!-- ————— ABERTURA ————— -->
+  <section class="intro" id="intro" aria-labelledby="intro-title">
+    <h1 class="intro__title" id="intro-title">
+      <span class="intro__line1">Estamos preparando algo</span>
+      <span class="intro__line2">
+        <span class="muu" id="muu" aria-hidden="true">M<span class="muu__u"><i>U</i></span><span
+          class="muu__u muu__u--anim" data-step="1"><i>U</i></span><span
+          class="muu__u muu__u--anim" data-step="2"><i>U</i></span><span
+          class="muu__u muu__u--anim" data-step="3"><i>U</i></span>ITO</span>
+        <span class="u-sr">MUUUUITO</span>
+        <span class="muu-bom">BOM.</span>
+      </span>
+    </h1>
+
+    <p class="intro__sub">O novo site Palma está chegando.</p>
+
+    <p class="intro__invite">Enquanto isso… que tal jogar?</p>
+
+    <button class="cta" id="play" type="button">
+      <span class="cta__label">JOGAR</span>
+      <span class="cta__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </button>
+
+    <p class="intro__hint">
+      <span class="only-fine">Espaço ou clique para pular</span>
+      <span class="only-coarse">Toque para pular</span>
+    </p>
+  </section>
+
+  <!-- ————— HUD ————— -->
+  <div class="hud" id="hud" aria-hidden="true">
+    <div class="hud__grid">
+      <div class="hud__metric">
+        <span class="hud__label">Distância</span>
+        <span class="hud__value"><span id="m-dist">0</span><em>m</em></span>
+      </div>
+      <div class="hud__metric hud__metric--accent">
+        <span class="hud__label">Leite coletado</span>
+        <span class="hud__value"><span id="m-milk">0</span><em>L</em></span>
+      </div>
+      <div class="hud__metric hud__metric--best">
+        <span class="hud__label">Recorde</span>
+        <span class="hud__value"><span id="m-best">0</span><em>L</em></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ————— INSTRUCAO DURANTE A PARTIDA ————— -->
+  <p class="playhint" id="playhint" aria-hidden="true">
+    <span class="only-fine">Espaço, seta ↑ ou clique para pular</span>
+    <span class="only-coarse">Toque na tela para pular</span>
+  </p>
+
+  <!-- ————— MARCOS DA MARCA ————— -->
+  <div class="milestone" id="milestone" aria-hidden="true">
+    <p class="milestone__top" id="ms-top"></p>
+    <p class="milestone__bottom" id="ms-bottom"></p>
+    <span class="milestone__rule" aria-hidden="true"></span>
+  </div>
+
+  <!-- ————— GAME OVER ————— -->
+  <section class="over" id="over" aria-labelledby="over-title" hidden>
+    <p class="over__badge" id="over-badge" hidden>Novo recorde</p>
+    <h2 class="over__title" id="over-title">MUUU!</h2>
+    <p class="over__stats">
+      A vaquinha Palmira percorreu <b id="o-dist">0 m</b><br>
+      e coletou <b id="o-milk">0 L</b>.
+    </p>
+    <p class="over__best">Recorde <span id="o-best">0 L</span></p>
+    <div class="over__actions">
+      <button class="cta" id="again" type="button">
+        <span class="cta__label">JOGAR NOVAMENTE</span>
+        <span class="cta__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path d="M20 11a8 8 0 1 0-.7 4.5M20 5v6h-6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </button>
+      <button class="linkbtn" id="back" type="button">Voltar</button>
+    </div>
+  </section>
+
+  <p class="u-sr" id="live" role="status" aria-live="polite"></p>
+</main>
+
+<script type="module" src="src/js/main.js"></script>
+</body>
+</html>

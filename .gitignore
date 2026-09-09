@@ -1,0 +1,16 @@
+# Material de origem: pesado e desnecessario para o site publicado.
+# Os vetores usados pelo site ja estao versionados em assets/brand/.
+/Logos Palma.zip
+/Pattern Palma.pdf
+# copia de trabalho na raiz; a que o site usa esta em assets/audio/
+/vaca-mugindo.mp3
+
+# Fonte comercial: a licenca nao permite redistribuir o arquivo num repositorio
+# publico. Ela esta fora de uso no site (ver README, secao 2.2). Para religar,
+# reponha assets/fonts/ localmente.
+/Authentic Signature.otf
+assets/fonts/
+
+node_modules/
+.DS_Store
+Thumbs.db

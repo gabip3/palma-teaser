@@ -1,0 +1,155 @@
+.intro {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  text-align: center;
+  padding:
+    calc(var(--safe-t) + clamp(104px, 16vh, 160px)) calc(var(--safe-r) + var(--gutter))
+    calc(var(--safe-b) + clamp(32px, 8vh, 72px))    calc(var(--safe-l) + var(--gutter));
+  transition: opacity .45s var(--ease-out), transform .6s var(--ease-out);
+}
+
+/* saida da intro: sobe e some, e so entao a cena do jogo aparece */
+.stage[data-state="playing"] .intro,
+.stage[data-state="over"] .intro {
+  opacity: 0;
+  transform: translateY(-3vh);
+  pointer-events: none;
+}
+
+/* entrada escalonada dos blocos */
+.intro > * {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .7s var(--ease-out), transform .8s var(--ease-out);
+}
+.stage.is-lit .intro > * { opacity: 1; transform: none; }
+.stage.is-lit .intro__title  { transition-delay: .06s; }
+.stage.is-lit .intro__sub    { transition-delay: .62s; }
+.stage.is-lit .intro__invite { transition-delay: .78s; }
+.stage.is-lit .cta           { transition-delay: .86s; }
+.stage.is-lit .intro__hint   { transition-delay: .96s; }
+
+/* ————— tipografia ————— */
+
+.intro__title {
+  margin: 0;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.intro__line1 {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: clamp(21px, 4.05vw, 52px);
+  font-weight: 800;
+  letter-spacing: -.015em;
+  line-height: .98;
+  text-transform: uppercase;
+}
+
+.intro__line2 {
+  display: block;
+  margin-top: clamp(1px, .5vh, 6px);
+  font-family: var(--font-display);
+  font-size: clamp(52px, 10.4vw, 132px);
+  font-weight: 900;
+  letter-spacing: -.035em;
+  line-height: .9;
+  color: var(--blue);
+}
+
+/* ————— MUITO -> MUUUUITO —————
+   Cada U extra e uma coluna de grid que cresce de 0fr ate a largura natural,
+   entao a animacao nao depende das metricas de nenhuma fonte especifica.
+   A letra tambem se estica no eixo X junto com a coluna: a palavra parece
+   ser puxada, em vez de ganhar letras que aparecem uma a uma. */
+.muu { display: inline-block; white-space: nowrap; }
+.muu__u { display: inline-grid; grid-template-columns: 1fr; vertical-align: baseline; }
+.muu__u > i { font-style: inherit; min-width: 0; }
+
+.muu__u--anim {
+  grid-template-columns: 0fr;
+  transition: grid-template-columns .78s var(--ease-fluid);
+}
+.muu__u--anim > i {
+  overflow: hidden;
+  opacity: 0;
+  transform: scaleX(.18);
+  transform-origin: left center;
+  transition:
+    transform .78s var(--ease-fluid),
+    opacity .42s var(--ease-out);
+}
+.muu__u--anim.is-on { grid-template-columns: 1fr; }
+.muu__u--anim.is-on > i { opacity: 1; transform: none; }
+
+.muu-bom {
+  display: inline-block;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.intro__sub {
+  margin: clamp(16px, 2.6vh, 30px) 0 0;
+  font-size: clamp(14px, 1.35vw, 18px);
+  font-weight: 500;
+  letter-spacing: .01em;
+  color: rgba(16, 13, 11, .72);
+  max-width: 34ch;
+}
+
+.intro__invite {
+  margin: clamp(16px, 2.4vh, 24px) 0 clamp(22px, 3.2vh, 34px);
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.intro__hint {
+  margin: clamp(18px, 2.8vh, 26px) 0 0;
+  font-size: clamp(12px, 1.05vw, 15px);
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(16, 13, 11, .5);
+}
+
+/* o MUU muge quando recebe o ponteiro ou o toque */
+.muu {
+  cursor: pointer;
+  transition: transform .5s var(--ease-swing);
+  transform-origin: 50% 70%;
+}
+.muu:hover { transform: scale(1.035); }
+.muu.is-mooing { animation: moo .9s var(--ease-out); }
+@keyframes moo {
+  0%   { transform: scale(1); }
+  18%  { transform: scale(1.07) rotate(-1deg); }
+  55%  { transform: scale(1.02) rotate(.6deg); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 760px) {
+  .intro__sub { max-width: 26ch; }
+}
+
+/* telas muito baixas em paisagem: comprime a pilha */
+@media (max-height: 520px) and (orientation: landscape) {
+  .intro { padding-top: calc(var(--safe-t) + 74px); }
+  .intro__line2 { font-size: clamp(40px, 7.4vw, 76px); }
+  .intro__sub { display: none; }
+  .intro__invite { font-size: clamp(17px, 2vw, 22px); margin-block: 12px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .muu__u--anim { grid-template-columns: 1fr; }
+  .muu__u--anim > i { opacity: 1; transform: none; }
+  .intro > * { opacity: 1; transform: none; }
+}
