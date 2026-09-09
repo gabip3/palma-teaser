@@ -54,13 +54,13 @@ oficial, sem nenhuma alteração no traço, e as manchas do corpo saem do patter
 oficial. Corpo, patas, úbere e rabo são formas simples construídas em volta
 desses dois elementos reais.
 
-A cabeça é montada **uma vez** como sprite, em . Não dá para
+A cabeça é montada **uma vez** como sprite, em `buildHeadSprite`. Não dá para
 pintar o rosto de branco só trocando a regra de preenchimento: os contornos
-internos do path vêm com sentido invertido, então  e 
+internos do path vêm com sentido invertido, então `nonzero` e `evenodd`
 produzem exatamente o mesmo resultado e os vazados continuam vazados. O sprite
 desenha a arte, descobre o exterior por inundação a partir das bordas e pinta
 de branco tudo que sobrou por dentro. De quebra, desenhar a cabeça virou um
- por quadro em vez de preencher um path.
+`drawImage` por quadro em vez de preencher um path.
 
 ---
 
