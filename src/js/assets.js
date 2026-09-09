@@ -32,21 +32,30 @@ export async function loadBrandGeometry() {
   return cache;
 }
 
-/* Desenha um Path2D encaixado num retangulo destino, preservando proporcao.
-   `grow` engorda o traco: mantem legivel a arte de linha em tamanho pequeno. */
-export function drawFitted(ctx, shape, x, y, w, h, { color = '#000', grow = 0 } = {}) {
+/* Aplica a transformacao que encaixa um Path2D num retangulo destino e chama
+   `desenhar(escala)`. Serve para quem precisa fazer mais do que preencher:
+   recortar, contornar, empilhar. */
+export function withFit(ctx, shape, x, y, w, h, desenhar) {
   const s = Math.min(w / shape.box.w, h / shape.box.h);
   ctx.save();
   ctx.translate(x + (w - shape.box.w * s) / 2, y + (h - shape.box.h * s) / 2);
   ctx.scale(s, s);
   ctx.translate(-shape.box.x, -shape.box.y);
-  ctx.fillStyle = color;
-  ctx.fill(shape.path, 'evenodd');
-  if (grow > 0) {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = grow / s;
-    ctx.lineJoin = 'round';
-    ctx.stroke(shape.path);
-  }
+  desenhar(s);
   ctx.restore();
+}
+
+/* Desenha um Path2D encaixado num retangulo destino, preservando proporcao.
+   `grow` engorda o traco: mantem legivel a arte de linha em tamanho pequeno. */
+export function drawFitted(ctx, shape, x, y, w, h, { color = '#000', grow = 0 } = {}) {
+  withFit(ctx, shape, x, y, w, h, (s) => {
+    ctx.fillStyle = color;
+    ctx.fill(shape.path, 'evenodd');
+    if (grow > 0) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = grow / s;
+      ctx.lineJoin = 'round';
+      ctx.stroke(shape.path);
+    }
+  });
 }

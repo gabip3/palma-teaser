@@ -49,9 +49,12 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 | `assets/audio/vaca-mugindo.mp3` | arquivo enviado por você | mugido no hover do MUUUUITO |
 | `assets/fonts/nunito/` | Nunito variável (SIL OFL) | títulos e UI, até chegar a fonte do wordmark |
 
-O personagem **não** é uma vaca desenhada do zero: a cabeça é o path do ícone
-oficial, e as manchas do corpo saem do pattern oficial. O corpo, as patas e o
-rabo são formas simples construídas em volta desses dois elementos reais.
+O personagem **não** é uma vaca desenhada do zero: a cabeça é a silhueta do
+ícone oficial e as manchas saem do pattern oficial. A cabeça é preenchida com a
+mesma linguagem do corpo, branco por dentro com mancha e contorno de tinta:
+preencher o path com  fecha os vazados e sobra a silhueta, e o 
+depois traz de volta orelhas e focinho como linha. Corpo, patas e rabo são
+formas simples construídas em volta desses dois elementos reais.
 
 ---
 

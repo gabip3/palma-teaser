@@ -8,17 +8,17 @@
 import { prefersReducedMotion } from './util.js';
 
 const WIDE = [
-  { at: 'tl', i: 0, x: -9, y: -11, w: 30, h: 26, rot: -8, d: 1.0 },
-  { at: 'tr', i: 2, x: -7, y: -9, w: 22, h: 20, rot: 14, d: 1.3 },
-  { at: 'bl', i: 5, x: -4, y: 5, w: 17, h: 16, rot: 24, d: 1.5 },
-  { at: 'br', i: 0, x: -4, y: 6, w: 22, h: 19, rot: 166, d: 1.7 },
+  { at: 'tl', i: 0, x: -11, y: -13, w: 38, h: 33, rot: -8, d: 1.0 },
+  { at: 'tr', i: 2, x: -9, y: -11, w: 28, h: 25, rot: 14, d: 1.3 },
+  { at: 'bl', i: 5, x: -6, y: 3, w: 22, h: 20, rot: 24, d: 1.5 },
+  { at: 'br', i: 0, x: -6, y: 4, w: 28, h: 24, rot: 166, d: 1.7 },
 ];
 
 const NARROW = [
-  { at: 'tl', i: 0, x: -21, y: -5, w: 46, h: 40, rot: -8, d: 1.0 },
-  { at: 'tr', i: 2, x: -12, y: 4, w: 34, h: 30, rot: 14, d: 1.3 },
-  { at: 'bl', i: 5, x: -15, y: -1, w: 31, h: 27, rot: 24, d: 1.5 },
-  { at: 'br', i: 0, x: -13, y: 1, w: 32, h: 28, rot: 166, d: 1.7 },
+  { at: 'tl', i: 0, x: -24, y: -7, w: 56, h: 49, rot: -8, d: 1.0 },
+  { at: 'tr', i: 2, x: -15, y: 2, w: 42, h: 37, rot: 14, d: 1.3 },
+  { at: 'bl', i: 5, x: -19, y: -3, w: 39, h: 34, rot: 24, d: 1.5 },
+  { at: 'br', i: 0, x: -17, y: -1, w: 40, h: 35, rot: 166, d: 1.7 },
 ];
 
 const SIDES = {

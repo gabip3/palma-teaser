@@ -3,7 +3,7 @@
    Assim personagem, obstaculos e cenario escalam juntos em qualquer tela. */
 
 import { BRAND } from '../config.js';
-import { drawFitted } from '../assets.js';
+import { drawFitted, withFit } from '../assets.js';
 
 /* ————————————————— PERSONAGEM ————————————————— */
 
@@ -123,16 +123,30 @@ export function drawCow(ctx, brand, x, groundY, u, s) {
   ctx.stroke(bodyPath);
   ctx.restore();
 
-  // ————— cabeca: icone oficial da marca —————
+  /* ————— cabeca —————
+     A silhueta e o path do icone oficial, mas preenchida como o corpo: branco
+     por dentro, mancha do pattern e contorno de tinta. Preenchendo o path com
+     'nonzero' os vazados fecham e sobra o contorno externo; o 'stroke' depois
+     traz de volta orelhas e focinho como linha. */
   const headW = 66, headH = headW / 1.446;
   const tilt = s.airborne ? -0.1 : Math.sin(phase * 2) * 0.035;
   ctx.save();
   ctx.translate(26, -76 + bob);
   ctx.rotate(tilt);
-  // `grow` engorda a arte de linha para nao sumir em telas pequenas
-  drawFitted(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, {
-    color: BRAND.ink,
-    grow: 1.9,
+  withFit(ctx, brand.icon, -headW / 2, -headH / 2, headW, headH, (escala) => {
+    const cara = brand.icon.path;
+    ctx.fillStyle = BRAND.paper;
+    ctx.fill(cara);
+
+    ctx.save();
+    ctx.clip(cara);
+    drawFitted(ctx, brand.manchas[11], 196, 128, 78, 92, { color: BRAND.ink });
+    ctx.restore();
+
+    ctx.strokeStyle = BRAND.ink;
+    ctx.lineWidth = 5.5 / escala;   // mesma espessura do contorno do corpo
+    ctx.lineJoin = 'round';
+    ctx.stroke(cara);
   });
   ctx.restore();
 
