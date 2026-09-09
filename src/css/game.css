@@ -3,7 +3,7 @@
 .hud {
   position: absolute;
   z-index: 4;
-  top: calc(var(--safe-t) + clamp(80px, 11.5vh, 122px));
+  top: calc(var(--safe-t) + clamp(108px, 15vh, 152px));
   left: calc(var(--safe-l) + var(--gutter));
   right: calc(var(--safe-r) + var(--gutter));
   opacity: 0;

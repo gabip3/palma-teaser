@@ -18,6 +18,9 @@ export class Collectibles {
   }
 
   reset() {
+    // O primeiro grupo da partida e sempre um Queijo Divino: quem joga conhece
+    // o item mais valioso logo de cara, em vez de depender do sorteio.
+    this.primeiroQueijo = true;
     this.list = [];
     this.pops = [];
     this.travel = 0;
@@ -62,13 +65,14 @@ export class Collectibles {
 
   #spawn(speed, v, obstacles) {
     // o Queijo Divino e raro, vem sozinho e sempre no alto: e o item de risco
-    const queijo = Math.random() < RUN.queijoChance;
+    const queijo = this.primeiroQueijo || Math.random() < RUN.queijoChance;
     const size = v.u * (queijo ? 0.6 : 0.52);
     const arc = !queijo && Math.random() < SPAWN.arcChance;
     const spread = v.u * 0.7;
     const x = this.#slot(v, obstacles, speed, arc ? spread : size * 0.5);
 
     if (x !== null) {
+      if (queijo) this.primeiroQueijo = false;
       const high = v.groundY - v.u * rand(1.55, 2.05);
       const low = v.groundY - v.u * 0.62;
       const kind = queijo ? 'queijo' : pick(PRODUCTS.placeholderShapes);

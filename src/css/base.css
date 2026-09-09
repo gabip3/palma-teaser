@@ -112,13 +112,13 @@ button {
   transform: translateX(-50%);
 }
 .brandbar__logo img {
-  width: clamp(64px, 8.5vw, 104px);
+  width: clamp(115px, 15.3vw, 187px);
   height: auto;
   transition: transform .5s var(--ease-out);
 }
 
 .stage[data-state="playing"] .brandbar__logo img,
-.stage[data-state="over"] .brandbar__logo img { width: clamp(48px, 5.5vw, 70px); }
+.stage[data-state="over"] .brandbar__logo img { width: clamp(86px, 9.9vw, 126px); }
 
 /* som */
 .sound {
@@ -233,6 +233,13 @@ button {
 @media (pointer: coarse) {
   .only-fine { display: none; }
   .only-coarse { display: inline; }
+}
+
+/* paisagem baixa: a logo cheia comeria a altura util */
+@media (max-height: 520px) and (orientation: landscape) {
+  .brandbar__logo img,
+  .stage[data-state="playing"] .brandbar__logo img,
+  .stage[data-state="over"] .brandbar__logo img { width: clamp(80px, 9vw, 108px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
