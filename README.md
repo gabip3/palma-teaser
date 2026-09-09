@@ -52,7 +52,7 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 O personagem **não** é uma vaca desenhada do zero: a cabeça é o path do ícone
 oficial, sem nenhuma alteração no desenho, e as manchas do corpo saem do pattern
 oficial. A única coisa acrescentada à cabeça é um preenchimento branco por trás,
-com regra de preenchimento , que fecha os vazados do rosto e das
+com regra de preenchimento `nonzero`, que fecha os vazados do rosto e das
 orelhas para o cenário não aparecer por dentro dela. Corpo, patas e rabo são
 formas simples construídas em volta desses dois elementos reais.
 
@@ -193,5 +193,10 @@ cenário e personagem crescem juntos em qualquer tela.
 - **Medidas por `ResizeObserver`, não por `window.resize`.** Em alguns contextos
   o primeiro quadro reporta largura zero; o observer resolve isso e ainda cobre
   o giro do aparelho.
-- **`?debug=1`** expõe a instância do jogo em `window.palma` para ajuste fino
+- **O foco só vai para o botão quando a pessoa está no teclado.** Focar o JOGAR
+  NOVAMENTE ao fim da partida ajuda quem joga no teclado, mas para quem usa
+  mouse ou toque o navegador desenhava o anel de foco azul em volta do botão
+  preto, sem servir para nada. O  guarda qual foi o último comando e o
+  fim de jogo decide a partir disso.
+- **** expõe a instância do jogo em  para ajuste fino
   no console.

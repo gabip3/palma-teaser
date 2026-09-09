@@ -6,6 +6,7 @@ export class Input {
   constructor(surface, { onPress, isActive }) {
     this.onPress = onPress;
     this.isActive = isActive;
+    this.ultimoFoiTeclado = false;   // decide se vale mostrar anel de foco
     this.pointers = new Set();
 
     const press = () => this.onPress();
@@ -17,6 +18,7 @@ export class Input {
       if (!this.isActive()) return;
       e.preventDefault();
       if (e.repeat) return;
+      this.ultimoFoiTeclado = true;
       press();
     };
 
@@ -24,6 +26,7 @@ export class Input {
       if (e.target.closest('button, a')) return;
       if (!this.isActive()) return;
       e.preventDefault();
+      this.ultimoFoiTeclado = false;
       this.pointers.add(e.pointerId);
       press();
     };

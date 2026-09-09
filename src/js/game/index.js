@@ -303,6 +303,9 @@ export class Game {
       `Fim de jogo. A vaquinha Palmira percorreu ${num(dist)} metros e coletou ${num(this.milk)} litros.` +
       (record ? ' Novo recorde!' : ` Recorde: ${num(best)} litros.`);
 
-    e.again.focus({ preventScroll: true });
+    /* Focar o botao ajuda quem joga no teclado, mas para quem usa mouse ou
+       toque o navegador desenha o anel de foco azul em volta do botao preto,
+       que fica feio e nao serve para nada. */
+    if (this.input.ultimoFoiTeclado) e.again.focus({ preventScroll: true });
   }
 }
