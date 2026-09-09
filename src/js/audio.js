@@ -11,7 +11,7 @@ let enabled = store.get('sound') !== false;
    (18 KB), mas so podem ser decodificados depois que existe um AudioContext,
    o que a politica de autoplay so permite apos um gesto do usuario. */
 const MUGIDO_URL = 'assets/audio/vaca-mugindo.mp3';
-const MUGIDO_GANHO = 0.9;   // vai direto na saida, fora do master dos efeitos
+const MUGIDO_GANHO = 0.32;  // discreto de proposito: e um agrado, nao um susto
 let mugido = null;
 const mugidoBytes = fetch(MUGIDO_URL)
   .then((r) => (r.ok ? r.arrayBuffer() : null))
@@ -100,7 +100,12 @@ export const sfx = {
     const src = ctx.createBufferSource();
     const g = ctx.createGain();
     src.buffer = mugido;
-    g.gain.value = MUGIDO_GANHO;
+    // entra e sai em rampa: sem estalo e sem sobressalto
+    const t0 = ctx.currentTime, dur = mugido.duration;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.linearRampToValueAtTime(MUGIDO_GANHO, t0 + 0.08);
+    g.gain.setValueAtTime(MUGIDO_GANHO, t0 + dur - 0.25);
+    g.gain.linearRampToValueAtTime(0.0001, t0 + dur);
     // direto no destino: o master e calibrado para bipes curtos, nao para voz
     src.connect(g).connect(ctx.destination);
     src.start();

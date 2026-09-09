@@ -163,13 +163,18 @@ cenário e personagem crescem juntos em qualquer tela.
 - **Áudio nunca em autoplay**, e tem botão de liga/desliga que grava a preferência.
 - **A instrução aparece nas duas telas**, em corpo grande: na abertura e sobre o
   pasto durante a partida, sumindo no primeiro pulo ou em 7 segundos.
-- **Passar o mouse (ou tocar) no MUUUUITO faz a Palmira mugir.** O som é o
-  arquivo real em  (18 KB, 2,05 s), decodificado
-  uma vez e tocado pelo mesmo mixer dos outros efeitos, então o botão SOM vale
-  para ele. Volume em , em . A política de
-  autoplay do navegador não aceita hover como gesto, então o áudio é destravado
-  no primeiro clique ou tecla da página: o primeiríssimo hover de uma sessão
-  pode sair mudo, e o toque no próprio MUU já serve de gesto.
+- **Passar o mouse no MUUUUITO faz a Palmira mugir.** O som é o arquivo real em
+  `assets/audio/vaca-mugindo.mp3` (18 KB, 2,05 s), decodificado uma vez e tocado
+  com rampa de entrada e saída, em volume baixo de propósito. O nível fica em
+  `MUGIDO_GANHO`, no `src/js/audio.js`.
+- **O primeiro hover de cada carregamento sai mudo.** Não é bug: a política de
+  autoplay do navegador só libera áudio depois de um gesto de verdade, e passar
+  o mouse não conta. Depois de qualquer clique na página, todo hover muge. O
+  hover também tenta destravar, o que já resolve em navegadores mais permissivos.
+- **Cuidado com debounce medido em `performance.now()`.** Ele conta desde o load,
+  então inicializar o marcador em `0` engolia o mugido nos primeiros segundos da
+  página, justamente quando alguém passa o mouse pela primeira vez. Use
+  `-Infinity`.
 - **Medidas por `ResizeObserver`, não por `window.resize`.** Em alguns contextos
   o primeiro quadro reporta largura zero; o observer resolve isso e ainda cobre
   o giro do aparelho.

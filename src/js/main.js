@@ -86,11 +86,17 @@ els.sound.addEventListener('click', () => {
 window.addEventListener('pointerdown', audio.unlock, { once: true });
 window.addEventListener('keydown', audio.unlock, { once: true });
 
-let ultimoMugido = 0;
+// -Infinity, nao 0: performance.now() conta desde o load, entao começar em zero
+// engolia o mugido nos primeiros segundos da pagina, que e justo quando alguem
+// passa o mouse pela primeira vez.
+let ultimoMugido = -Infinity;
 function mugir() {
   const agora = performance.now();
   if (agora - ultimoMugido < 2100) return;   // o clipe tem 2s: nao empilha
   ultimoMugido = agora;
+  // tenta destravar aqui tambem: em navegadores de politica mais frouxa isso
+  // ja faz o primeiro hover soar, sem precisar de clique antes
+  audio.unlock();
   sfx.moo();
   els.muu.classList.remove('is-mooing');
   void els.muu.offsetWidth;
