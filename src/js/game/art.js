@@ -256,18 +256,33 @@ export function drawObstacle(ctx, kind, x, groundY, u) {
     ctx.moveTo(-w * 0.34, -h * 0.26); ctx.lineTo(w * 0.34, -h * 0.26);
     ctx.stroke();
   } else if (kind === 'trator') {
-    // corpo + cabine
-    R(ctx, -w / 2 + 10, -h * 0.6, w * 0.62, h * 0.34, 6); ctx.fill();
-    R(ctx, -w / 2 + 24, -h, w * 0.4, h * 0.46, 7); ctx.fill();
-    R(ctx, w / 2 - 58, -h * 0.42, 46, h * 0.26, 5); ctx.fill();
-    // rodas
-    ctx.beginPath(); ctx.arc(-w / 2 + 34, -30, 30, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(w / 2 - 26, -19, 19, 0, Math.PI * 2); ctx.fill();
+    /* Silhueta classica: roda grande atras com a cabine em cima, capo baixo na
+       frente. A roda traseira antiga tinha raio 30 num corpo de 74 de altura e
+       cobria a propria cabine, entao o trator virava um borrao preto com dois
+       pontos brancos. Aqui as pecas nao se comem, e as rodas levam anel claro:
+       sem essa separacao nada se le em tamanho de jogo. */
+    R(ctx, -w / 2 + 13, -h, 42, 34, 6); ctx.fill();        // cabine
+    R(ctx, -w / 2 + 15, -30, 74, 10, 3); ctx.fill();       // chassi
+    R(ctx, w / 2 - 41, -42, 34, 14, 4); ctx.fill();        // capo
+    R(ctx, w / 2 - 39, -58, 6, 18, 3); ctx.fill();         // escapamento
+
     ctx.fillStyle = BRAND.paper;
-    ctx.beginPath(); ctx.arc(-w / 2 + 34, -30, 12, 0, Math.PI * 2); ctx.fill();
-    ctx.beginPath(); ctx.arc(w / 2 - 26, -19, 7, 0, Math.PI * 2); ctx.fill();
-    // janela da cabine
-    R(ctx, -w / 2 + 32, -h + 8, w * 0.22, h * 0.24, 4); ctx.fill();
+    R(ctx, -w / 2 + 19, -68, 30, 20, 3); ctx.fill();       // vidro da cabine
+
+    // rodas recortadas na linha do chao, para o anel claro nao pingar no pasto
+    ctx.save();
+    ctx.beginPath(); ctx.rect(-w, -h - 24, w * 2, h + 24); ctx.clip();
+    for (const [cx, cy, r] of [[-w / 2 + 25, -22, 22], [w / 2 - 19, -13, 13]]) {
+      ctx.fillStyle = BRAND.paper;
+      ctx.beginPath(); ctx.arc(cx, cy, r + 3.5, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = BRAND.ink;
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = BRAND.paper;
+      ctx.beginPath(); ctx.arc(cx, cy, r * 0.42, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = BRAND.ink;
+      ctx.beginPath(); ctx.arc(cx, cy, r * 0.16, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.restore();
   }
   ctx.restore();
 }

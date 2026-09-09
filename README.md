@@ -227,5 +227,38 @@ cenário e personagem crescem juntos em qualquer tela.
   Auditados 1315 produtos: a folga para o obstáculo seguinte nunca caiu abaixo
   dos 1,50 s exigidos. A rampa continua de pé, com vãos apertados subindo de
   7% no começo para 37% no fim.
+- **O rosto da vaca não pintava, e inundar a partir da borda não bastava.** O
+  ícone oficial é um desenho de linha ABERTO: existe uma fresta entre a orelha
+  e a cabeça por onde o exterior escorre para dentro do rosto. A primeira
+  tentativa inundava o exterior e pintava o resto de branco, o que dava zero
+  pixel branco, medido no sprite publicado. Agora o exterior passa por um
+  fechamento morfológico: a tinta é engrossada em `r`, o exterior é inundado
+  sobre essa barreira grossa e depois devolvido ao tamanho original. A fresta
+  fica selada e a silhueta volta ao lugar. O engorda serve só para calcular a
+  máscara; a arte desenhada por cima continua sendo a original, sem nenhum
+  traço alterado. Conferido sobre fundo verde: rosto e miolo das orelhas
+  brancos, zero vazamento, do tamanho de jogo ao ampliado.
+- **O sprite da cabeça é montado a 384 px, não 512.** Ele aparece na tela com
+  no máximo ~166 px de largura em tela de alta densidade, então 384 já é mais
+  do que o dobro do necessário. A fração branca da máscara é a mesma nas duas
+  resoluções (0,410 contra 0,414) e o custo cai de 56 ms para 26 ms, pago uma
+  vez só no carregamento.
+- **O trator era um borrão.** A roda traseira tinha raio 30 num corpo de 74 de
+  altura e cobria a própria cabine, e todas as peças eram da mesma tinta sem
+  separação nenhuma. O resultado era uma mancha preta com dois pontos brancos.
+  Redesenhado com as peças sem se comerem e com anel claro em volta das rodas,
+  recortado na linha do chão para o anel não pingar no pasto. As medidas de
+  `OBSTACLES.trator` não mudaram, então o pulo continua com a mesma folga já
+  verificada.
+- **As frases dos marcos ocupavam a tela inteira.** `.ms-display` estava em
+  `clamp(40px, 8.6vw, 108px)`, o que dava 74% da largura no desktop e passava
+  de 100% no celular. Agora é `clamp(28px, 4.4vw, 54px)`: 37% no desktop e 74%
+  em 375 px, com presença de marca e sem atropelar o jogo.
+- **O painel de preview suspende `requestAnimationFrame` quando está oculto.**
+  Isso congela o laço do jogo e faz a captura de tela devolver quadro velho. Na
+  dúvida, medir por pixel em vez de confiar na imagem. O servidor de
+  desenvolvimento aceita `POST /__shot` com um dataURL e grava
+  `.preview/shot.png`, que é o caminho confiável para conferir desenho de
+  canvas. Nada disso existe no site publicado, que é estático.
 - **`?debug=1`** expõe a instância do jogo em `window.palma` para ajuste fino
   no console.
