@@ -24,3 +24,7 @@ Thumbs.db
 
 # fotos originais das embalagens: o site usa as versoes reduzidas em assets/produtos/
 /produtos-originais/
+
+# copia do site pronta para subir na Locaweb (FTP)
+/site-para-locaweb/
+/site-para-locaweb.zip
