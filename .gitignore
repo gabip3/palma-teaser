@@ -28,3 +28,6 @@ Thumbs.db
 # copia do site pronta para subir na Locaweb (FTP)
 /site-para-locaweb/
 /site-para-locaweb.zip
+
+# backup do site WordPress que estava no ar (arquivos + banco): nunca vai para o Git
+/backup-site-antigo/
