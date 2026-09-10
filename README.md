@@ -260,5 +260,19 @@ cenário e personagem crescem juntos em qualquer tela.
   desenvolvimento aceita `POST /__shot` com um dataURL e grava
   `.preview/shot.png`, que é o caminho confiável para conferir desenho de
   canvas. Nada disso existe no site publicado, que é estático.
+- **A logo leva de volta ao início, de qualquer tela**, a pedido do cliente. É um
+  link de verdade (`href="./"`): sem JS, ou com Ctrl/Cmd, funciona como qualquer
+  link; no clique comum a volta é a mesma do VOLTAR AO INÍCIO, sem recarregar.
+  Tocar nela não conta como pulo (`input.js` ignora `a` e `button`), e quem sai
+  no meio da corrida não perde o recorde feito até ali.
+- **A logo do jogo cresceu, e o placar se posiciona a partir dela.** O tamanho
+  fica em `--logo-jogo` e a distância do topo em `--marca-topo`, no `.stage` do
+  `base.css`. O HUD calcula a própria altura com esses dois valores, então a
+  logo nunca encosta na linha do placar, em nenhuma tela.
+- **Pendência conhecida: em notebook baixo, a vaca no alto do pulo passa por
+  trás do contador de leite.** Em 1280×720 e 1366×768 o céu é curto para o
+  pulo mais o placar; isso já acontecia antes da logo crescer. O teto por `vh`
+  em `--logo-jogo` e a marca mais alta no jogo seguram a piora, mas a correção
+  de verdade é mexer no pulo ou no placar nessas telas.
 - **`?debug=1`** expõe a instância do jogo em `window.palma` para ajuste fino
   no console.

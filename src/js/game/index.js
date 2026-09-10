@@ -150,6 +150,10 @@ export class Game {
   }
 
   toAttract() {
+    // Saindo no meio da corrida (pela logo), o que ela ja fez conta para o
+    // recorde. submit guarda sempre o maior valor, entao repetir depois do fim
+    // de jogo e inofensivo.
+    if (this.state !== 'attract') store.submit(this.milk, Math.floor(this.dist));
     this.hidePlayHint();
     this.state = 'attract';
     this.dist = 0;

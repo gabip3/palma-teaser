@@ -50,7 +50,17 @@ button {
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+
+  /* Medidas da marca no topo. O HUD se posiciona a partir delas, entao a logo
+     do jogo pode crescer sem nunca encostar na linha do placar. A logo e
+     120x93: altura = largura x 0,775. O teto por vh segura o crescimento em
+     notebook baixo, onde a vaca no alto do pulo ja chega perto do placar. */
+  --marca-topo: clamp(16px, 3vw, 30px);
+  --logo-jogo: clamp(64px, min(7.5vw, 12vh), 104px);
 }
+/* no jogo a marca sobe um pouco: o ceu e da vaca */
+.stage[data-state="playing"],
+.stage[data-state="over"] { --marca-topo: clamp(12px, 2vh, 24px); }
 
 /* A cena do jogo so entra depois do clique em JOGAR: a abertura e uma pagina
    puramente tipografica. */
@@ -98,7 +108,7 @@ button {
 .brandbar {
   position: absolute;
   z-index: 8;   /* a marca permanece visivel por cima da folha de fim de jogo */
-  top: calc(var(--safe-t) + clamp(16px, 3vw, 30px));
+  top: calc(var(--safe-t) + var(--marca-topo));
   left: calc(var(--safe-l) + var(--gutter));
   right: calc(var(--safe-r) + var(--gutter));
   display: flex;
@@ -106,10 +116,13 @@ button {
   justify-content: flex-end;
 }
 
+/* link para o inicio (ver main.js) */
 .brandbar__logo {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
+  display: block;
+  -webkit-tap-highlight-color: transparent;
 }
 .brandbar__logo img {
   width: clamp(170px, 21vw, 260px);
@@ -118,7 +131,7 @@ button {
 }
 
 .stage[data-state="playing"] .brandbar__logo img,
-.stage[data-state="over"] .brandbar__logo img { width: clamp(48px, 5.5vw, 70px); }
+.stage[data-state="over"] .brandbar__logo img { width: var(--logo-jogo); }
 
 /* som */
 .sound {
@@ -239,6 +252,8 @@ button {
    A regra do jogo tem especificidade maior e continua valendo. */
 @media (max-height: 520px) and (orientation: landscape) {
   .brandbar__logo img { width: clamp(90px, 11vw, 130px); }
+  /* e a do jogo cresce pouco: aqui o ceu e curto */
+  .stage { --logo-jogo: 52px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

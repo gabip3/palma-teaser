@@ -24,12 +24,13 @@ const els = {
   again: $('again'),
   back: $('back'),
   sound: $('sound'),
+  logo: $('logo'),
   muu: $('muu'),
   playhint: $('playhint'),
   live: $('live'),
 };
 
-const BUILD = '2026-09-10-a';
+const BUILD = '2026-09-10-b';
 console.log('Palma teaser · build ' + BUILD);
 
 const game = new Game(els);
@@ -64,6 +65,16 @@ function toIntro() {
 els.play.addEventListener('click', () => toPlaying(false));
 els.again.addEventListener('click', () => toPlaying(true));
 els.back.addEventListener('click', toIntro);
+
+/* A logo leva de volta ao inicio, de qualquer tela. E um link de verdade
+   (href="./"): sem JS, ou com Ctrl/Cmd/botao do meio, o navegador trata como
+   qualquer link. No clique comum a volta e a mesma do VOLTAR AO INICIO, sem
+   recarregar a pagina. O toque nela nao vira pulo: input.js ignora links. */
+els.logo.addEventListener('click', (e) => {
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
+  if (game.state !== 'attract') toIntro();
+});
 
 /* ————— som ————— */
 

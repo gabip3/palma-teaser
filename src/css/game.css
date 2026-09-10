@@ -3,7 +3,9 @@
 .hud {
   position: absolute;
   z-index: 4;
-  top: calc(var(--safe-t) + clamp(80px, 11.5vh, 122px));
+  /* nunca acima da base da logo do jogo, com folga de 16px (ver base.css) */
+  top: calc(var(--safe-t) + max(clamp(80px, 11.5vh, 122px),
+                                var(--marca-topo) + var(--logo-jogo) * .775 + 16px));
   left: calc(var(--safe-l) + var(--gutter));
   right: calc(var(--safe-r) + var(--gutter));
   opacity: 0;
