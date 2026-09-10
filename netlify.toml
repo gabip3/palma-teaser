@@ -1,0 +1,19 @@
+# Site estatico, sem etapa de build: o Netlify publica a raiz do repositorio
+# como esta. Com este arquivo, ao importar o repo no Netlify nao e preciso
+# preencher comando nem pasta de publicacao.
+[build]
+  publish = "."
+
+# A fonte e o mugido nunca mudam de conteudo sem mudar de nome: podem ficar em
+# cache por um ano. HTML, JS e CSS seguem o padrao do Netlify, que revalida a
+# cada visita, entao cada deploy aparece na hora, sem o atraso de ate 10 min do
+# GitHub Pages.
+[[headers]]
+  for = "/assets/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/assets/audio/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
