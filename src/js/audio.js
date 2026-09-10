@@ -90,13 +90,18 @@ export const sfx = {
       tone({ freq: f, dur: 0.5, type: 'sine', gain: 0.34, delay: i * 0.07 }));
   },
 
-  /* Mugido: arquivo real da marca, tocado pelo mesmo mixer dos efeitos,
-     entao o botao SOM continua valendo para ele. */
-  moo: () => {
-    if (!enabled) return;
-    // Hover nao conta como gesto para a politica de autoplay do navegador:
-    // ate o primeiro clique da pagina, o contexto fica suspenso e nao ha som.
-    if (!ctx || ctx.state !== 'running' || !mugido) { prepararMugido(); return; }
+  /* Mugido: arquivo real da marca. O botao SOM vale para ele tambem.
+     Devolve uma promessa com true quando tocou: o primeiro pode chegar antes
+     de o arquivo terminar de decodificar, e ai espera por ele. */
+  moo: async () => {
+    if (!enabled || !ctx) return false;
+    // O iOS suspende o contexto quando a aba perde o foco. Tenta retomar e
+    // deixa este mugido passar, em vez de esperar uma promessa que pode travar.
+    if (ctx.state !== 'running') {
+      Promise.resolve().then(() => ctx.resume()).catch(() => {});
+      return false;
+    }
+    if (!(await prepararMugido()) || !enabled) return false;
     const src = ctx.createBufferSource();
     const g = ctx.createGain();
     src.buffer = mugido;
@@ -109,5 +114,6 @@ export const sfx = {
     // direto no destino: o master e calibrado para bipes curtos, nao para voz
     src.connect(g).connect(ctx.destination);
     src.start();
+    return true;
   },
 };

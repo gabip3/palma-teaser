@@ -121,13 +121,8 @@
   color: rgba(16, 13, 11, .5);
 }
 
-/* o MUU muge quando recebe o ponteiro ou o toque */
-.muu {
-  cursor: pointer;
-  transition: transform .5s var(--ease-swing);
-  transform-origin: 50% 70%;
-}
-.muu:hover { transform: scale(1.035); }
+/* o MUUUUITO balanca quando a Palmira muge sozinha (ver main.js) */
+.muu { transform-origin: 50% 70%; }
 .muu.is-mooing { animation: moo .9s var(--ease-out); }
 @keyframes moo {
   0%   { transform: scale(1); }

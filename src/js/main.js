@@ -29,7 +29,7 @@ const els = {
   live: $('live'),
 };
 
-const BUILD = '2026-09-09-e';
+const BUILD = '2026-09-10-a';
 console.log('Palma teaser · build ' + BUILD);
 
 const game = new Game(els);
@@ -78,32 +78,42 @@ els.sound.addEventListener('click', () => {
   paintSound(audio.toggle());
 });
 
-/* ————— o MUU muge —————
-   A politica de autoplay do navegador so libera audio depois de um gesto de
-   verdade, e passar o mouse nao conta. Por isso destravamos no primeiro
-   clique/tecla da pagina, e o proprio toque no MUU tambem serve de gesto. */
+/* ————— a Palmira muge sozinha —————
+   De tempos em tempos, em qualquer tela. A politica de autoplay dos
+   navegadores so libera audio depois de um gesto de verdade (clique, toque ou
+   tecla; mouse passando e rolagem nao contam), entao o relogio so comeca no
+   primeiro gesto da pagina. Antes disso o site e mudo, e isso nao tem
+   contorno legitimo. */
 
-window.addEventListener('pointerdown', audio.unlock, { once: true });
-window.addEventListener('keydown', audio.unlock, { once: true });
+const MUGIDO_PRIMEIRO = 1500;              // ms depois do primeiro gesto
+const MUGIDO_INTERVALO = [20000, 32000];   // ms entre um mugido e outro, sorteado
 
-// -Infinity, nao 0: performance.now() conta desde o load, entao começar em zero
-// engolia o mugido nos primeiros segundos da pagina, que e justo quando alguem
-// passa o mouse pela primeira vez.
-let ultimoMugido = -Infinity;
-function mugir() {
-  const agora = performance.now();
-  if (agora - ultimoMugido < 2100) return;   // o clipe tem 2s: nao empilha
-  ultimoMugido = agora;
-  // tenta destravar aqui tambem: em navegadores de politica mais frouxa isso
-  // ja faz o primeiro hover soar, sem precisar de clique antes
-  audio.unlock();
-  sfx.moo();
-  els.muu.classList.remove('is-mooing');
-  void els.muu.offsetWidth;
-  els.muu.classList.add('is-mooing');
+function agendarMugido(ms) { setTimeout(mugirSozinha, ms); }
+
+function mugirSozinha() {
+  const [a, b] = MUGIDO_INTERVALO;
+  agendarMugido(a + Math.random() * (b - a));
+  // aba escondida ou vaca no meio da batida: pula esta vez, sem acumular
+  if (document.hidden || game.state === 'crash') return;
+  sfx.moo().then((tocou) => {
+    if (!tocou || game.state !== 'attract') return;
+    // na abertura, o MUUUUITO balanca junto com o som
+    els.muu.classList.remove('is-mooing');
+    void els.muu.offsetWidth;
+    els.muu.classList.add('is-mooing');
+  });
 }
 
-els.muu.addEventListener('pointerenter', mugir);
+let relogioLigado = false;
+function primeiroGesto() {
+  audio.unlock();
+  if (relogioLigado) return;
+  relogioLigado = true;
+  agendarMugido(MUGIDO_PRIMEIRO);
+}
+
+window.addEventListener('pointerdown', primeiroGesto, { once: true });
+window.addEventListener('keydown', primeiroGesto, { once: true });
 
 /* ————— higiene de toque no mobile ————— */
 

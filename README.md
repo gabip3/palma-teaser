@@ -46,7 +46,7 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 | `assets/brand/palma-manchas.json` | 14 formas isoladas do `Pattern Palma.pdf` | manchas da composição, nuvens, faixa do chão, manchas do corpo da vaca |
 | `assets/brand/palma-pattern.svg` | ladrilho inteiro, recolorível | disponível, ainda sem uso |
 | `assets/fonts/AuthenticSignature.woff2` | o `.otf` da pasta | pronto, mas em pausa (ver 2.2) |
-| `assets/audio/vaca-mugindo.mp3` | arquivo enviado por você | mugido no hover do MUUUUITO |
+| `assets/audio/vaca-mugindo.mp3` | arquivo enviado por você | mugido automático, de tempos em tempos |
 | `assets/fonts/nunito/` | Nunito variável (SIL OFL) | títulos e UI, até chegar a fonte do wordmark |
 
 O personagem **não** é uma vaca desenhada do zero: a cabeça é a arte do ícone
@@ -183,21 +183,21 @@ cenário e personagem crescem juntos em qualquer tela.
   andam juntos, e baixar a velocidade encolhe o alcance.
 - **`prefers-reduced-motion`** desliga as animações de interface; a mecânica
   do jogo continua igual.
-- **Áudio nunca em autoplay**, e tem botão de liga/desliga que grava a preferência.
+- **Nada soa antes do primeiro gesto**, e o botão SOM grava a preferência.
 - **A instrução aparece nas duas telas**, em corpo grande: na abertura e sobre o
   pasto durante a partida, sumindo no primeiro pulo ou em 7 segundos.
-- **Passar o mouse no MUUUUITO faz a Palmira mugir.** O som é o arquivo real em
-  `assets/audio/vaca-mugindo.mp3` (18 KB, 2,05 s), decodificado uma vez e tocado
-  com rampa de entrada e saída, em volume baixo de propósito. O nível fica em
-  `MUGIDO_GANHO`, no `src/js/audio.js`.
-- **O primeiro hover de cada carregamento sai mudo.** Não é bug: a política de
-  autoplay do navegador só libera áudio depois de um gesto de verdade, e passar
-  o mouse não conta. Depois de qualquer clique na página, todo hover muge. O
-  hover também tenta destravar, o que já resolve em navegadores mais permissivos.
-- **Cuidado com debounce medido em `performance.now()`.** Ele conta desde o load,
-  então inicializar o marcador em `0` engolia o mugido nos primeiros segundos da
-  página, justamente quando alguém passa o mouse pela primeira vez. Use
-  `-Infinity`.
+- **A Palmira muge sozinha de tempos em tempos**, em qualquer tela, a pedido do
+  cliente. Antes ela mugia no hover do MUUUUITO. O primeiro mugido vem 1,5 s
+  depois do primeiro gesto da página, e os seguintes a cada 20 a 32 s, em
+  intervalo sorteado. Pula a vez com a aba escondida e durante a batida, sem
+  acumular para depois. Na abertura, o MUUUUITO balança junto com o som. Os
+  tempos ficam em `MUGIDO_PRIMEIRO` e `MUGIDO_INTERVALO`, no `src/js/main.js`;
+  o volume em `MUGIDO_GANHO`, no `src/js/audio.js`. O som é o arquivo real em
+  `assets/audio/vaca-mugindo.mp3` (18 KB, 2,05 s), com rampa de entrada e saída.
+- **Antes do primeiro clique, toque ou tecla, o site é mudo, e isso não tem
+  contorno.** A política de autoplay dos navegadores bloqueia áudio até um gesto
+  de verdade; mouse passando e rolagem não contam. Por isso o relógio do mugido
+  só começa nesse primeiro gesto.
 - **Medidas por `ResizeObserver`, não por `window.resize`.** Em alguns contextos
   o primeiro quadro reporta largura zero; o observer resolve isso e ainda cobre
   o giro do aparelho.
