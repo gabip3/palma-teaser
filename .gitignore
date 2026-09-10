@@ -21,3 +21,6 @@ Thumbs.db
 
 # copia limpa do site para subir no Netlify arrastando a pasta
 /site-para-netlify/
+
+# fotos originais das embalagens: o site usa as versoes reduzidas em assets/produtos/
+/produtos-originais/

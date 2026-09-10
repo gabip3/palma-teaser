@@ -27,9 +27,27 @@ async function gravarCaptura(req, res) {
   res.writeHead(200, { 'content-type': 'text/plain' }).end(destino);
 }
 
+/* POST /__salvar?arquivo=assets/produtos/<nome>.webp grava o dataURL do corpo.
+   As embalagens do jogo sao reduzidas no proprio navegador, a partir dos
+   originais, e salvas por aqui. So aceita assets/produtos/. */
+async function salvarProduto(req, res) {
+  const arquivo = new URL(req.url, 'http://x').searchParams.get('arquivo') || '';
+  if (!/^assets\/produtos\/[a-z0-9-]+\.(webp|png)$/.test(arquivo)) {
+    res.writeHead(400).end('caminho recusado'); return;
+  }
+  const partes = [];
+  for await (const p of req) partes.push(p);
+  const texto = Buffer.concat(partes).toString('utf8');
+  await mkdir(join(ROOT, 'assets', 'produtos'), { recursive: true });
+  const bytes = Buffer.from(texto.slice(texto.indexOf(',') + 1), 'base64');
+  await writeFile(join(ROOT, arquivo), bytes);
+  res.writeHead(200, { 'content-type': 'text/plain' }).end(arquivo + ' ' + bytes.length);
+}
+
 createServer(async (req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
   if (req.method === 'POST' && url === '/__shot') { await gravarCaptura(req, res); return; }
+  if (req.method === 'POST' && url === '/__salvar') { await salvarProduto(req, res); return; }
   const rel = normalize(url === '/' ? '/index.html' : url).replace(/^[/\\]+/, '');
   const file = join(ROOT, rel);
   if (!file.startsWith(ROOT)) { res.writeHead(403).end('Forbidden'); return; }

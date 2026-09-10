@@ -47,6 +47,7 @@ Nada foi redesenhado. Os PDFs oficiais foram convertidos para vetor com
 | `assets/brand/palma-pattern.svg` | ladrilho inteiro, recolorível | disponível, ainda sem uso |
 | `assets/fonts/AuthenticSignature.woff2` | o `.otf` da pasta | pronto, mas em pausa (ver 2.2) |
 | `assets/audio/vaca-mugindo.mp3` | arquivo enviado por você | mugido automático, de tempos em tempos |
+| `assets/produtos/*.webp` | embalagens sem sombra da pasta do Drive, recortadas e reduzidas | **os coletáveis**: 12 produtos e o Queijo Divino |
 | `assets/fonts/nunito/` | Nunito variável (SIL OFL) | títulos e UI, até chegar a fonte do wordmark |
 
 O personagem **não** é uma vaca desenhada do zero: a cabeça é a arte do ícone
@@ -66,19 +67,26 @@ de branco tudo que sobrou por dentro. De quebra, desenhar a cabeça virou um
 
 ## 2. O que ainda falta você mandar
 
-### 2.1 Embalagens dos produtos: **placeholder em uso**
+### 2.1 Embalagens dos produtos: **reais, em uso**
 
-Não há nenhuma imagem de produto ou embalagem na pasta. Os coletáveis são hoje
-uma **forma abstrata da marca** (azul + branco + o ícone oficial da vaca),
-propositalmente sem nome de produto, para não inventar nada.
+As 13 embalagens vieram da pasta do Drive do cliente, na versão **sem sombra**.
+Os originais (PNG de até 4000 px, de 0,5 a 2,7 MB cada) ficam em
+`produtos-originais/`, fora do repositório. O jogo usa versões recortadas no
+conteúdo e reduzidas para 256 px no lado maior (320 px no Queijo Divino), em
+WebP com transparência, em `assets/produtos/`.
 
-Para trocar pelo produto real:
+- 12 produtos entram no sorteio comum e valem 25 L cada; no arco de três, as
+  três embalagens são sempre diferentes.
+- O Queijo Divino continua sendo o item raro, agora com a embalagem real, e
+  vale 100 L (`RUN.queijoValor`). Nenhum bônus novo foi inventado.
+- Cada embalagem ocupa a mesma área na tela, sem distorcer, com teto de altura
+  e de largura: o creme de leite alto e o queijo prato deitado têm o mesmo peso
+  visual. A colisão acompanha o formato real de cada uma.
+- Se alguma imagem não carregar, o item volta ao desenho vetorial da marca.
 
-1. coloque os recortes em `assets/produtos/` (PNG ou WEBP com fundo
-   transparente, altura por volta de 400 px, um arquivo por embalagem);
-2. liste os caminhos em `PRODUCTS.images`, em `src/js/config.js`.
-
-O jogo passa a desenhar as imagens no lugar do vetor sem nenhuma outra mudança.
+Para trocar ou incluir um produto: gere a versão reduzida em `assets/produtos/`
+(o servidor de desenvolvimento aceita `POST /__salvar`, ver `dev-server.mjs`) e
+liste em `PRODUCTS`, no `src/js/config.js`.
 
 ### 2.2 Fontes
 

@@ -112,9 +112,25 @@ export const MILESTONES = [
    Para trocar pelo produto real: adicione os PNG/WEBP recortados em
    assets/produtos/ e liste os caminhos em `images`. O jogo passa a
    desenhar as imagens no lugar do desenho vetorial automaticamente. */
+/* Embalagens reais, na versao sem sombra da pasta do cliente, reduzidas para
+   o tamanho do jogo (originais fora do repositorio). O Queijo Divino fica a
+   parte: e o item raro, que vale mais (RUN.queijoValor). */
 export const PRODUCTS = {
-  images: [],
-  placeholderShapes: ['garrafa', 'caixa'],
+  itens: [
+    { id: 'creme-de-leite', nome: 'Creme de Leite', src: 'assets/produtos/creme-de-leite.webp' },
+    { id: 'leite-integral', nome: 'Leite Pasteurizado Integral', src: 'assets/produtos/leite-integral.webp' },
+    { id: 'manteiga', nome: 'Manteiga de Primeira Qualidade com Sal', src: 'assets/produtos/manteiga.webp' },
+    { id: 'ricota', nome: 'Ricota Fresca', src: 'assets/produtos/ricota.webp' },
+    { id: 'doce-de-leite', nome: 'Doce de Leite', src: 'assets/produtos/doce-de-leite.webp' },
+    { id: 'queijo-prato', nome: 'Queijo Prato', src: 'assets/produtos/queijo-prato.webp' },
+    { id: 'queijo-prato-zero', nome: 'Queijo Prato Zero', src: 'assets/produtos/queijo-prato-zero.webp' },
+    { id: 'frescal-light', nome: 'Queijo Frescal Light', src: 'assets/produtos/frescal-light.webp' },
+    { id: 'frescal-tradicional', nome: 'Queijo Frescal Tradicional', src: 'assets/produtos/frescal-tradicional.webp' },
+    { id: 'frescal-zero', nome: 'Queijo Frescal Zero', src: 'assets/produtos/frescal-zero.webp' },
+    { id: 'minas-padrao', nome: 'Queijo Minas Padrão Tradicional', src: 'assets/produtos/minas-padrao.webp' },
+    { id: 'minas-padrao-zero', nome: 'Queijo Minas Padrão Zero', src: 'assets/produtos/minas-padrao-zero.webp' },
+  ],
+  divino: { id: 'queijo-divino', nome: 'Queijo Divino', src: 'assets/produtos/queijo-divino.webp' },
 };
 
 export const STORAGE_KEY = 'palma.teaser.v1';

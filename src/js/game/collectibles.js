@@ -1,20 +1,49 @@
 import { SPAWN, PRODUCTS, RUN, BRAND } from '../config.js';
-import { rand, pick, hits } from '../util.js';
+import { rand, hits } from '../util.js';
 import { drawProduct } from './art.js';
 
-/* Produtos Palma ao longo do percurso.
-   Enquanto nao houver a arte oficial da embalagem na pasta, o item usa o
-   desenho placeholder de art.js (formas da marca + icone oficial).
-   Basta preencher PRODUCTS.images para trocar por fotos reais. */
+/* Produtos Palma ao longo do percurso: as embalagens reais, recortadas sem
+   sombra. Se alguma imagem nao carregar, o item cai no desenho vetorial de
+   art.js e a partida segue normalmente. */
+
+function carregar(src) {
+  const img = new Image();
+  img.decoding = 'async';
+  img.src = src;
+  return img;
+}
+const pronta = (img) => img.complete && img.naturalWidth > 0;
+
+/* Tamanho em tela de um item. A embalagem ocupa a mesma AREA de um quadrado
+   de lado size, sem distorcer, com teto de altura e de largura: o creme de
+   leite alto e o queijo prato deitado ficam com o mesmo peso visual. Sem
+   imagem, vale o quadrado do desenho vetorial. */
+function medidas(it) {
+  const img = it.produto && it.produto.img;
+  if (!img || !pronta(img)) return { w: it.size, h: it.size };
+  const p = img.naturalWidth / img.naturalHeight;
+  const w = it.size * Math.sqrt(p), h = it.size / Math.sqrt(p);
+  const k = Math.min(1, (it.size * 1.4) / h, (it.size * 1.3) / w);
+  return { w: w * k, h: h * k };
+}
 
 export class Collectibles {
   constructor() {
-    this.images = PRODUCTS.images.map((src) => {
-      const img = new Image();
-      img.src = src;
-      return img;
-    });
+    this.produtos = PRODUCTS.itens.map((p) => ({ ...p, img: carregar(p.src) }));
+    this.divino = { ...PRODUCTS.divino, img: carregar(PRODUCTS.divino.src) };
+    this.ultimo = null;
     this.reset();
+  }
+
+  /* n embalagens diferentes entre si, sem repetir a ultima que apareceu */
+  #sortear(n) {
+    const pool = this.produtos.filter((p) => p !== this.ultimo);
+    const escolha = [];
+    while (escolha.length < n && pool.length) {
+      escolha.push(pool.splice((Math.random() * pool.length) | 0, 1)[0]);
+    }
+    this.ultimo = escolha[escolha.length - 1];
+    return escolha;
   }
 
   reset() {
@@ -68,9 +97,9 @@ export class Collectibles {
   #spawn(speed, v, obstacles) {
     // o Queijo Divino e raro, vem sozinho e sempre no alto: e o item de risco
     const queijo = this.primeiroQueijo || Math.random() < RUN.queijoChance;
-    const size = v.u * (queijo ? 0.6 : 0.52);
+    const size = v.u * (queijo ? 0.7 : 0.6);   // a embalagem real precisa de corpo para ser lida
     const arc = !queijo && Math.random() < SPAWN.arcChance;
-    const spread = v.u * 0.7;
+    const spread = v.u * 0.85;   // o queijo mais largo nao encosta no vizinho do arco
     const x = this.#slot(v, obstacles, speed, arc ? spread : size * 0.5);
 
     if (x !== null) {
@@ -78,22 +107,24 @@ export class Collectibles {
       if (queijo) this.primeiroQueijo = false;
       const high = v.groundY - v.u * rand(1.55, 2.05);
       const low = v.groundY - v.u * 0.62;
-      const kind = queijo ? 'queijo' : pick(PRODUCTS.placeholderShapes);
+      const kind = queijo ? 'queijo' : 'produto';
       const valor = queijo ? RUN.queijoValor : RUN.milkPerItem;
+      // no arco, tres embalagens diferentes: a linha passa inteira pela tela
+      const vitrine = queijo ? [this.divino] : this.#sortear(arc ? 3 : 1);
 
       if (arc) {
         for (let i = -1; i <= 1; i++) {
           this.list.push({
             x: x + i * spread,
             y: high + Math.abs(i) * v.u * 0.30,
-            size, kind, valor, taken: false,
+            size, kind, valor, produto: vitrine[i + 1], taken: false,
           });
         }
       } else {
         this.list.push({
           x,
           y: queijo || Math.random() < 0.55 ? high : low,
-          size, kind, valor, taken: false,
+          size, kind, valor, produto: vitrine[0], taken: false,
         });
       }
     }
@@ -112,8 +143,9 @@ export class Collectibles {
     let milk = 0;
     for (const it of this.list) {
       if (it.taken) continue;
-      const r = it.size * 0.42;
-      if (hits(cowBox, { x: it.x - r, y: it.y - r, w: r * 2, h: r * 2 })) {
+      // colisao no formato real da embalagem, levemente menor que o desenho
+      const { w, h } = medidas(it);
+      if (hits(cowBox, { x: it.x - w * 0.4, y: it.y - h * 0.4, w: w * 0.8, h: h * 0.8 })) {
         it.taken = true;
         milk += it.valor;
         this.pops.push({ x: it.x, y: it.y, life: 0.55, max: 0.55, valor: it.valor, queijo: it.kind === 'queijo' });
@@ -125,16 +157,18 @@ export class Collectibles {
 
   draw(ctx, brand, v) {
     for (const it of this.list) {
-      if (this.images.length) {
-        const img = this.images[0];
-        if (img.complete && img.naturalWidth) {
-          const h = it.size * 1.15;
-          const w = (img.naturalWidth / img.naturalHeight) * h;
-          ctx.drawImage(img, it.x - w / 2, it.y - h / 2, w, h);
-          continue;
-        }
+      const t = this.t + it.x * 0.01;
+      const img = it.produto && it.produto.img;
+      if (img && pronta(img)) {
+        const { w, h } = medidas(it);
+        ctx.save();
+        ctx.translate(it.x, it.y);
+        ctx.rotate(Math.sin(t * 2.2) * 0.06);   // o mesmo balanco dos vetores
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.restore();
+        continue;
       }
-      drawProduct(ctx, brand, it.kind, it.x, it.y, it.size, this.t + it.x * 0.01);
+      drawProduct(ctx, brand, it.kind === 'queijo' ? 'queijo' : 'garrafa', it.x, it.y, it.size, t);
     }
 
     // anel + rotulo de coleta: retorno curto, sem exagero
